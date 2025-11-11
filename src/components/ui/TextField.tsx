@@ -1,25 +1,28 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { TextInput, TextInputProps, View } from "react-native";
+import React from "react";
+import { Text, TextInput, TextInputProps, View } from "react-native";
 
 
 type Props = TextInputProps & {
-    label?: string;
-    errorMessage?: string;
+    label: string;
+    errorText?: string;
     icon?: keyof typeof MaterialIcons.glyphMap;
 };
 
-export default function TextField({label, errorMessage, icon, ...props}: Props) {
+export  function TextField({label, errorText, icon}: Props) {
     return (
         <View>
-            <text>Teste de label</text>
-        <view>
+            <Text>{label}</Text>
+        <View>
             (!! icon && {
-                <MaterialIcons name={icon} size={20} color="black"/>
+                <View>
+                <MaterialIcons name={icon} size={18} color="black"/>
+                </View>
             })
             <TextInput
-                value="Isso é um teste muito legal "
+                value="Isso é um teste"
             />
-        </view>
+            </View>
         </View>
     );
 }

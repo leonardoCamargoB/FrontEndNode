@@ -1,13 +1,18 @@
-import { Label } from '@react-navigation/elements';
-import  TextField  from '../ui/TextField';
+import {AuthContainer} from "../ui/AuthContainer";
+import {TextField} from '../ui/TextField';
 
-export default function renderLOGIN() {
+export function RenderLogin() {
     return(
+        <AuthContainer 
+            title="Bem-vindo de volta!"
+            subtitle="Faça login para continuar!"
+            icon="hotel">
+
         <TextField
             label="Email"
-            icon="email"
-
-        >
+            icon="email">
         </TextField>
+
+        </AuthContainer>
     );
 }
