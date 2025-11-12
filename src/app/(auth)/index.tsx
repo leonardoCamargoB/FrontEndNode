@@ -1,11 +1,9 @@
 /*Login*/
-import { RenderLogin } from "@/components/login";
+import  RenderLogin  from "@/components/login";
 
-
-
-export default function Login(){
-    return(
-        <RenderLogin/>
-    );
-
+const login = ()=> {
+    return( 
+    <RenderLogin/>);
 }
+
+export default login;

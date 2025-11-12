@@ -8,7 +8,7 @@ replace(): substitui uma tela a tela atual por outra
 
 import { Stack } from "expo-router";
 
-export default function AuthLayout(){
+const AuthLayout =() =>{
     return(
 
         <Stack screenOptions={{headerShown: false}}>
@@ -18,3 +18,5 @@ export default function AuthLayout(){
     );
 
 }
+
+export default AuthLayout; 
