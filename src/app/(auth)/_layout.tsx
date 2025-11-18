@@ -6,17 +6,15 @@ replace(): substitui uma tela a tela atual por outra
 
 */
 
+
+
 import { Stack } from "expo-router";
 
-const AuthLayout =() =>{
+const AuthLayout =() =>{ 
     return(
-
-        <Stack screenOptions={{headerShown: false}}>
+    <Stack screenOptions={{headerShown: false}}>
             <Stack.Screen name="index" options={{title:"Login" }}/>
         </Stack>
-
-    );
-
+);
 }
-
 export default AuthLayout; 
