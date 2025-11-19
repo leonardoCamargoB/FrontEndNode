@@ -26,7 +26,7 @@ const RenderLogin = () => {
             placeholder="******"
             />
         
-        <TouchableOpacity style={[global.primaryButton]}>
+        <TouchableOpacity style={[global.primaryButton]} onPress={() => router.push("/(tabs)/explorer")}>
             <Text style={global.primaryButtonText}>Entrar</Text>
         </TouchableOpacity>
 

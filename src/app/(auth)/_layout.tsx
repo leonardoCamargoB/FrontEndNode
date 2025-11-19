@@ -14,7 +14,7 @@ const AuthLayout =() =>{
     return(
     <Stack screenOptions={{headerShown: false}}>
             <Stack.Screen name="index" options={{title:"Login" }}/>
-        </Stack>
-);
+    </Stack>
+    );
 }
 export default AuthLayout; 

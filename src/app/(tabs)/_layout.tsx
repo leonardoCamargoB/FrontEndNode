@@ -14,10 +14,10 @@ import { Tabs } from 'expo-router';
             }}
         />
         <Tabs.Screen
-            name="reservations"
+            name="check"
             options={{
             title: 'Home',
-            tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+            tabBarIcon: ({ color }) => <FontAwesome size={28} name="check" color={color} />,
             }}
         />
         <Tabs.Screen
