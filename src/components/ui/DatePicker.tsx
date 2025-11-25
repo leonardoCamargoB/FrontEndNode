@@ -13,13 +13,12 @@ tomorrow.setDate(today.getDate() + 1);
 
 const startDate = getFormatedDate(tomorrow, "YYYY/MM/DD");
 
-  // Configurações para português
 const options = {
     backgroundColor: '#080516',
-    textHeaderColor: '#469ab6',
+    textHeaderColor: '#b64646ff',
     textDefaultColor: '#FFFFFF',
     selectedTextColor: '#FFF',
-    mainColor: '#469ab6',
+    mainColor: '#b64646ff',
     textSecondaryColor: '#FFFFFF',
     borderColor: 'rgba(122, 146, 165, 0.1)',
     defaultFont: 'Inter-Regular',
@@ -45,7 +44,6 @@ return (
     <TouchableOpacity onPress={handleOnPress}>
         <Text>Open</Text>
     </TouchableOpacity>
-
     <Modal animationType="slide" transparent={true} visible={open}>
         <View style={picker.centerView}>
         <View style={picker.modalView}>
@@ -57,7 +55,6 @@ return (
             isGregorian={true}
               options={options} // Adicione as opções aqui
             />
-
             <TouchableOpacity onPress={handleOnPress}>
             <Text>Close</Text>
             </TouchableOpacity>

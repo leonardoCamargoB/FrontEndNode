@@ -1,12 +1,12 @@
 
-import { FontAwesome6, MaterialIcons} from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
 import React from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { global } from '../ui/styles';
 
 type Props = {
-    title: string;
+    title?: string;
     subtitle?: string;
     icon?: keyof typeof FontAwesome6.glyphMap;
     children: React.ReactNode;
@@ -26,10 +26,10 @@ return (
             )}
         <View style={global.header}>
             {!! icon && <FontAwesome6 name={icon} size={30} color="black"/>}
-            <Text style={global.titulo}>{title}</Text>
+            {!! title && <Text style={global.titulo}>{title}</Text>}
             {! ! subtitle &&<Text style={global.subtitulo}>{subtitle}</Text>}
         </View>
-        <View style={global.content}>
+        <View >
         {children}
         </View>
         </ScrollView>

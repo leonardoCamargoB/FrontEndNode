@@ -8,12 +8,12 @@ import TextField from '../ui/TextField';
 const RenderLogin = () => {
     const router = useRouter();
     const {height, width} = Dimensions.get("window");
-    return(
+    return( 
         <AuthContainer 
             title="Bem-vindo de volta!"
             subtitle="Faça login para continuar!"
             icon="hotel">
-
+        <View style={global.content}>
         <TextField
             label="E-mail"
             icon="email"
@@ -42,7 +42,7 @@ const RenderLogin = () => {
                 </Text>
             </TouchableOpacity>
         </View>
-
+</View>
 
         </AuthContainer>
 
