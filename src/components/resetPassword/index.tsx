@@ -23,7 +23,7 @@ const RenderLogin = () => {
 
         <TextField
             label="E-mail"
-            icon="email"
+            icon={{ lib: "FontAwesome6", name: "email" }}
             placeholder="user@gmail.com"
             keyboardType="email-address"
             />

@@ -12,8 +12,8 @@ export const global = StyleSheet.create({
     },
     container: {
         marginTop: height * 0.1,
-        paddingHorizontal: width * 0.06,
-        paddingVertical: height * 0.08,
+        paddingHorizontal: width * 0.05,
+        paddingVertical: height * 0.09,
     },
     header: {
         alignItems: 'center',
@@ -78,7 +78,7 @@ export const global = StyleSheet.create({
     },
     input: {
         flex: 1,
-        fontSize: 16,
+        fontSize: 12,
         color: '#E8E8E8',
         fontWeight: '500',
         marginLeft: width * 0.03,
@@ -189,3 +189,171 @@ export const global = StyleSheet.create({
         letterSpacing: 0.5,
     },
 });
+
+// reservationInfoStyle
+export const reservationInfoStyle = StyleSheet.create({
+    container: {
+        backgroundColor: '#2D2D2D',
+        padding: width * 0.05,
+        margin: width * 0.04,
+        borderRadius: 20,
+        shadowColor: '#000000',
+        shadowOpacity: 0.3,
+        shadowOffset: { width: 0, height: 8 },
+        shadowRadius: 20,
+        elevation: 15,
+        borderWidth: 1,
+        borderColor: '#444444',
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: '600',
+        color: '#E8E8E8',
+        marginBottom: height * 0.01,
+        letterSpacing: 0.8,
+        textAlign: 'center',
+    },
+    price: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#DC143C',
+        marginBottom: height * 0.02,
+        textAlign: 'center',
+        letterSpacing: 1,
+    },
+    apartmentTypes: {
+        marginBottom: height * 0.02,
+        alignItems: 'center',
+    },
+    apartmentType: {
+        fontSize: 14,
+        color: '#B8B8B8',
+        marginBottom: height * 0.005,
+        letterSpacing: 0.3,
+    },
+    separator: {
+        height: 1,
+        backgroundColor: '#444444',
+        marginVertical: height * 0.02,
+    },
+    checkSection: {
+        marginBottom: height * 0.02,
+        backgroundColor: '#3A3A3A',
+        padding: width * 0.04,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: '#555555',
+    },
+    checkHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: height * 0.008,
+    },
+    checkLabel: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#DC143C',
+        marginRight: width * 0.03,
+        letterSpacing: 0.8,
+    },
+    checkDate: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#E8E8E8',
+    },
+    checkTime: {
+        fontSize: 14,
+        color: '#B8B8B8',
+        letterSpacing: 0.2,
+    },
+    periodSection: {
+        alignItems: 'center',
+        marginVertical: height * 0.02,
+        padding: width * 0.04,
+        backgroundColor: '#3A3A3A',
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: '#555555',
+    },
+    periodTitle: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#E8E8E8',
+        letterSpacing: 0.8,
+    },
+    apartmentDetails: {
+        alignItems: 'center',
+        marginVertical: height * 0.02,
+        padding: width * 0.04,
+        backgroundColor: '#3A3A3A',
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: '#555555',
+    },
+    detailTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#E8E8E8',
+        marginBottom: height * 0.008,
+        letterSpacing: 0.8,
+    },
+    detailDate: {
+        fontSize: 16,
+        color: '#B8B8B8',
+        marginBottom: height * 0.008,
+        letterSpacing: 0.3,
+    },
+    detailTypes: {
+        alignItems: 'center',
+    },
+    detailType: {
+        fontSize: 14,
+        color: '#B8B8B8',
+        marginBottom: height * 0.005,
+        letterSpacing: 0.3,
+    },
+    finalPrice: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#DC143C',
+        textAlign: 'center',
+        marginVertical: height * 0.02,
+        letterSpacing: 1,
+    },
+    tableSection: {
+        marginTop: height * 0.02,
+    },
+    tableTitle: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#E8E8E8',
+        marginBottom: height * 0.015,
+        letterSpacing: 0.8,
+        textAlign: 'center',
+    },
+    table: {
+        borderWidth: 1.5,
+        borderColor: '#555555',
+        borderRadius: 12,
+        backgroundColor: '#3A3A3A',
+        overflow: 'hidden',
+    },
+    tableRow: {
+        flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderBottomColor: '#555555',
+    },
+    tableHeader: {
+        flex: 1,
+        padding: width * 0.04,
+        fontSize: 14,
+        fontWeight: '600',
+        color: '#DC143C',
+        textAlign: 'center',
+        letterSpacing: 0.8,
+        textTransform: 'uppercase',
+    },
+});
+
+
+
