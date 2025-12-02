@@ -1,79 +1,100 @@
 import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
-import { Dimensions, Image, Text, View, StyleSheet } from "react-native";
-import cardRoomStyle from "./cardRoomStyle";
+import { Dimensions, Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
 import { global } from "../styles";
 
-const { width, height } = Dimensions.get('window');
+type NameIcon =
+  | { lib: "MaterialIcons"; name: keyof typeof MaterialIcons.glyphMap }
+  | { lib: "FontAwesome6"; name: keyof typeof FontAwesome6.glyphMap }
+  | { lib: "FontAwesome5"; name: keyof typeof FontAwesome5.glyphMap };
 
-type Infos = 
-| {title?: string; text?: string; price: number }
-
-
-type NameIcon = 
-    | {lib: "MaterialIcons"; name: keyof typeof MaterialIcons.glyphMap }
-    | {lib: "FontAwesome6"; name: keyof typeof FontAwesome6.glyphMap }
-    | {lib: "FontAwesome5"; name: keyof typeof FontAwesome5.glyphMap };
+type Infos = { title?: string; text: string; price: number };
 
 type Props = {
-  image?: React.ImgHTMLAttributes<HTMLImageElement>['src'];
+  image?: ImageSourcePropType;
   label?: string;
   description?: Infos;
   icon?: NameIcon;
-}
+};
 
-const RoomCard =  ({label, description, icon}: Props) => {
+const { width, height } = Dimensions.get("window");
+const RoomCard = ({ image, label, description, icon }: Props) => {
   return (
-      <View style={global.content}>  
-        <View>
-        </View>
-        <View>
-          {!!label && <Text style={global.titulo}>{label}</Text>}
-          <View>
-            <View>
-              {!!icon && (
-                <View>
-                  {icon.lib === "MaterialIcons" && (
-                    <MaterialIcons name={icon.name} size={23} color="black"/>
-                  )}
-                  {icon.lib === "FontAwesome6" && (
-                    <FontAwesome6 name={icon.name} size={23} color="black"/>
-                  )}
-                  {icon.lib === "FontAwesome5" && (
-                    <FontAwesome5 name={icon.name} size={23} color="black"/>
-                  )}
-                </View>
-              )}
-              {!!description && (
-                <View style={{display: "flex",  flexDirection:"column"}}>
-                  <View style={styles.descripton}>
-                    <Text style={{color: "#475569"}}>{description.title}</Text>
-                    <Text style={{color: "#475569"}}>{description.text}</Text>
-                    <View>
-                    <Text style={{color: "#475569"}}>{description.price}</Text>
-                    </View>   
-                  </View>
-                </View>
-              )}
+    <View style={global.content}>
+    {!!image &&
+      <View><Image style={styles.image} source={image} resizeMode="cover"/></View>}
+      <View>
+        {!!label && <Text style={{fontSize: 23, fontWeight: 600, marginTop: height * 0.02}}>{label}</Text>}
+        <View style={styles.container}>
+          <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-evenly"}}>
+            {!!icon && (
+              <View style={{marginTop: height * 0.04}}>
+                {icon.lib === "MaterialIcons" && (
+                  <MaterialIcons name={icon.name} size={22} color="black" />
+                )}
+                {icon.lib === "FontAwesome5" && (
+                  <FontAwesome5 name={icon.name} size={22} color="black" />
+                )}
+                {icon.lib === "FontAwesome6" && (
+                  <FontAwesome6 name={icon.name} size={22} color="black" />
+                )}
               </View>
-            <View></View>
-            </View>
+            )}
+            {!!description && (
+              <View style={styles.description}>
+                <View>
+                  {!!description.title && (
+                    <Text style={global.label}>{description.title}</Text>
+                  )}
+                  <Text style={styles.text}>{description.text}</Text>
+                </View>
+                <View style={{marginTop: height * 0.04}}>
+                  <Text style={styles.price}>R$ {description.price}</Text>
+                </View>
+              </View>
+            )}
           </View>
-
+        </View>
       </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  descripton: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#475569",
+  image: {
+    height: height * 0.3,
+    width: "auto",
     borderRadius: 10,
     shadowColor: "#000",
     shadowOpacity: 0.05,
-    shadowRadius: 2, 
+    shadowRadius: 10,
+    elevation: 2,
+  },
+  container: {
+    marginTop: height * 0.03,
+    backgroundColor: "#444444",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
+  },
+  description: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    height: height * 0.09,
+    width: "auto",
+    justifyContent: "space-between",
+  },
+  text: {
+    fontSize: 15,
+  },
+  price: {
+    height: "auto", width: width * 0.7,
+    fontSize: 17,
+    fontWeight: 700,
+    marginLeft: 10,
+    color: "black"
   }
-})
-
+});
 export default RoomCard;

@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get('window');
     //useState() para gerenciar e alterar os estados
     const [checkIn, setCheckIn] = useState("");
     const [checkOut, setCheckOut] = useState("");
-    const [calendar, setCalendar] = useState<"checkin" | "checkout">();
+    const [calendar, setCalendar] = useState<"checkin" | "checkout" | null>(null);
     type NameIcon = 
     | {lib: "MaterialIcons"; name: keyof typeof MaterialIcons.glyphMap }
     | {lib: "FontAwesome6"; name: keyof typeof FontAwesome6.glyphMap }
@@ -19,11 +19,11 @@ const { width, height } = Dimensions.get('window');
 
 return (
     <AuthContainer>  
-    <View style={{display: "flex", flexDirection: 'row', gap: width * 0.05, justifyContent: "center"}}> 
+    <View style={{display: "flex"/* flexDirection: 'row', gap: width * 0.05*/, justifyContent: "center"}}> 
         <View style={{display:"flex", flexDirection:"column"}}>
         {/*Input do checkin para abrir o calendario*/}
         <TouchableOpacity onPress={() => setCalendar("checkin")}>
-            <View style={{width: width * 0.42}}>
+            <View style={{width: width * 0.9}}>
         <TextField  
             label='Check-in'
             icon={{ lib: "FontAwesome6", name: "calendar-days" }}
@@ -33,32 +33,39 @@ return (
     </View>
         </TouchableOpacity>
         {calendar === "checkin" && (
-            <RenderDatePicker onSelectDate={(date) => {setCheckIn(date);}}/>)}
+            <RenderDatePicker onSelectDate={(date) => {
+            setCheckIn(date)
+            setCalendar(null);
+            ;}}/>)}
             </View>
         <View style={{display:"flex", flexDirection:"column"}}>
         {/*Input do checkout para abrir o calendario*/}
         <TouchableOpacity onPress={() => setCalendar("checkout")}>
-            <View style={{width: width * 0.42}}>
+            <View style={{width: width * 0.9}}>
         <TextField  
             label='check-out'
-            icon={{ lib: "FontAwesome6", name: "calendar-days" }}
+            icon={{ lib: "FontAwesome6", name: "calendar-days"}}
             placeholder='Selecione a data'
             value={checkOut}
         />
     </View>
         </TouchableOpacity>
         {calendar === "checkout" && (
-            <RenderDatePicker onSelectDate={(date) => {setCheckOut(date)}}/>)}
+            <RenderDatePicker onSelectDate={(date) => {
+                setCheckOut(date)
+                setCalendar(null);
+            }}/>)}
             </View>
         </View>
         <RoomCard
+        image={require("../../assets/imgs/img.jpg")}
         label="Apartamento"
         icon={{
         lib:"FontAwesome5",
         name:"bed"
         }} 
         description={{
-            title:"Caracter",
+            title:"Descrição do Quarto",
             text:"1 cama de casal \n1 cama de solteiro",
             price: 180.90
         }}

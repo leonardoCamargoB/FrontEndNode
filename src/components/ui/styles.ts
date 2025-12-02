@@ -11,13 +11,12 @@ export const global = StyleSheet.create({
         flex: 1,
     },
     container: {
-        marginTop: height * 0.1,
-        paddingHorizontal: width * 0.05,
-        paddingVertical: height * 0.09,
+        paddingHorizontal: width * 0.03,
+        paddingVertical: height * 0.05,
     },
     header: {
         alignItems: 'center',
-        marginBottom: height * 0.05,
+        marginBottom: height * 0.010,
     },
     titulo: {
         fontSize: 32,
