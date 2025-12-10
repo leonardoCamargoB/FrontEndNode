@@ -15,7 +15,7 @@ const RenderLogin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [touched, setTouched] = useState<{email?: boolean; password?: boolean}>({});
+    const [touched,  ] = useState<{email?: boolean; password?: boolean}>({});
 
     const errors = useMemo(() =>{
         const errors: Record<string, string> = {};
@@ -58,7 +58,6 @@ const RenderLogin = () => {
             placeholder="******"
             value={password}
             onChangeText={(text) => setPassword(text)}
-            onBlur={() => setTouched((prev) => ({...prev, password: true}))}
             errorText={errors.password}
             />
         

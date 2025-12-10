@@ -19,9 +19,10 @@ const RenderRegister = () => {
         const [confPassword, setConfPassword] = useState("");
         const [nome, setNome] = useState("");
         const [cpf, setcpf] = useState("");
-        const [Telefone, setTelefone] = useState("");
+        const [telefone, setTelefone] = useState("");
         const [loading, setLoading] = useState(false);
-        const [touched, setTouched] = useState<{email?: boolean; password: boolean; nome: boolean; cpf: boolean; telefone: boolean; confPassword:boolean}>({});
+        const [touched, setTouched] = useState<{email?: boolean; password?: boolean; nome?: boolean; cpf?: boolean; telefone?: boolean; confPassword?:boolean}>({});
+
         const errors = useMemo(() =>{
                 const errors: Record<string, string> = {};
                 if(touched.email && !email) errors.email = "O e-mail é obrigatório.";
@@ -30,11 +31,11 @@ const RenderRegister = () => {
                 if(touched.password && password && password.length < 6) errors.password = "A senha deve ter no mínimo 6 caracteres.";
                 if(touched.nome && !nome) errors.nome = "O nome é obrigatório.";
                 if(touched.cpf && !cpf) errors.cpf = "O CPF é obrigatório.";
-                if(touched.telefone && !Telefone) errors.telefone = "O telefone é obrigatório.";
+                if(touched.telefone && !telefone) errors.telefone = "O telefone é obrigatório.";
                 if(touched.confPassword && !confPassword) errors.confPassword = "A confirmação de senha é obrigatória.";
                 if(touched.confPassword && confPassword && confPassword !== password) errors.confPassword = "As senhas não coincidem.";
                 return errors;
-            }, [email, touched]);
+            }, [email, password, confPassword, nome, cpf, telefone, touched]);
 
             const canSubmit = email && Object.keys(errors).length === 0 && !loading;
 
@@ -73,7 +74,7 @@ const RenderRegister = () => {
             icon={{ lib: "FontAwesome6", name: "local-phone"}}
             placeholder="(xx) xxxxx-xxxx"
             keyboardType="email-address"
-            value={Telefone}
+            value={telefone}
             onChangeText={(text) => setTelefone(text)}
             />
 
