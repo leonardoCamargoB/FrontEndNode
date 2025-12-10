@@ -1,12 +1,43 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from "expo-router";
+import { useMemo, useState } from "react";
 import { Dimensions, Text, TouchableOpacity } from "react-native";
 import AuthContainer from "../ui/AuthContainer";
 import { global } from "../ui/styles";
 import TextField from '../ui/TextField';
 
+function isValidEmail(email: string) {
+    return /^[^\s@&='"!]@[^\s@&='"!].[^\s@&='"!]$/.test(email);
+}
 
-const RenderLogin = () => {
+
+const RenderResetPassword = () => {
+    const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [touched, setTouched] = useState
+    <{email: boolean}>
+    ({email: false});
+
+    const errors = useMemo(() =>{
+            const errors: Record<string, string> = {};
+            if(touched.email && !email) errors.email = "O e-mail é obrigatório.";
+            if(touched.email && email && !isValidEmail(email)) errors.email = "O e-mail é inválido, Digite um e-mail válido.";
+            
+            
+            
+            return errors;
+        }, [email, touched]);
+
+        const canSubmit = email &&  Object.keys(errors).length === 0 && !loading;
+
+        const handleSubmit =  async () => {
+            router.replace("/(auth)");
+        }
+
+
+
+
+
     const router = useRouter();
     const {height, width} = Dimensions.get("window");
     return(
@@ -26,10 +57,13 @@ const RenderLogin = () => {
             icon={{ lib: "FontAwesome6", name: "email" }}
             placeholder="user@gmail.com"
             keyboardType="email-address"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            errorText={errors.email}
             />
 
-        <TouchableOpacity style={[global.primaryButton]}>
-            <Text style={global.primaryButtonText}>Enviar o E-mail</Text>
+        <TouchableOpacity style={[global.primaryButton]} onPress={handleSubmit} disabled={!canSubmit}>
+            <Text style={global.primaryButtonText}>Eviar o E-mail</Text>
         </TouchableOpacity>
 
         </AuthContainer>
@@ -40,4 +74,4 @@ const RenderLogin = () => {
     );
 }
 
-export default RenderLogin;
+export default RenderResetPassword;
