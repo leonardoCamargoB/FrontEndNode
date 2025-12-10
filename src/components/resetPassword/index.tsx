@@ -1,10 +1,10 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from "expo-router";
-import { useMemo, useState } from "react";
 import { Dimensions, Text, TouchableOpacity } from "react-native";
 import AuthContainer from "../ui/AuthContainer";
 import { global } from "../ui/styles";
 import TextField from '../ui/TextField';
+import { useState, useMemo } from "react";
 
 function isValidEmail(email: string) {
     return /^[^\s@&='"!]@[^\s@&='"!].[^\s@&='"!]$/.test(email);
@@ -14,9 +14,7 @@ function isValidEmail(email: string) {
 const RenderResetPassword = () => {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
-    const [touched, setTouched] = useState
-    <{email: boolean}>
-    ({email: false});
+    const [touched, setTouched] = useState<{email?: boolean}>({});
 
     const errors = useMemo(() =>{
             const errors: Record<string, string> = {};

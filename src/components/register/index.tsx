@@ -17,22 +17,19 @@ const RenderRegister = () => {
         const [email, setEmail] = useState("");
         const [password, setPassword] = useState("");
         const [confPassword, setConfPassword] = useState("");
-        const [Nome, setNome] = useState("");
-        const [CPF, setCPF] = useState("");
+        const [nome, setNome] = useState("");
+        const [cpf, setcpf] = useState("");
         const [Telefone, setTelefone] = useState("");
         const [loading, setLoading] = useState(false);
-        const [touched, setTouched] = useState
-        <{email: boolean; password: boolean; name: boolean; cpf: boolean; telefone: boolean; confPassword: boolean}>
-        ({email: false, password: false, name: false, cpf: false, telefone: false, confPassword: false});
-
+        const [touched, setTouched] = useState<{email?: boolean; password: boolean; nome: boolean; cpf: boolean; telefone: boolean; confPassword:boolean}>({});
         const errors = useMemo(() =>{
                 const errors: Record<string, string> = {};
                 if(touched.email && !email) errors.email = "O e-mail é obrigatório.";
                 if(touched.email && email && !isValidEmail(email)) errors.email = "O e-mail é inválido, Digite um e-mail válido.";
                 if(touched.password && !password) errors.password = "A senha é obrigatória.";
                 if(touched.password && password && password.length < 6) errors.password = "A senha deve ter no mínimo 6 caracteres.";
-                if(touched.name && !Nome) errors.name = "O nome é obrigatório.";
-                if(touched.cpf && !CPF) errors.cpf = "O CPF é obrigatório.";
+                if(touched.nome && !nome) errors.nome = "O nome é obrigatório.";
+                if(touched.cpf && !cpf) errors.cpf = "O CPF é obrigatório.";
                 if(touched.telefone && !Telefone) errors.telefone = "O telefone é obrigatório.";
                 if(touched.confPassword && !confPassword) errors.confPassword = "A confirmação de senha é obrigatória.";
                 if(touched.confPassword && confPassword && confPassword !== password) errors.confPassword = "As senhas não coincidem.";
@@ -58,7 +55,7 @@ const RenderRegister = () => {
             icon={{ lib: "FontAwesome6", name: "drive-file-rename-outline"}}
             placeholder="digite o seu nome"
             keyboardType="email-address"
-            value={Nome}
+            value={nome}
             onChangeText={(text) => setNome(text)}
             />
 
@@ -67,8 +64,8 @@ const RenderRegister = () => {
             icon={{ lib: "FontAwesome6", name: "123"}}
             placeholder="xxx.xxx.xxx-xx"
             keyboardType="email-address"
-            value={CPF}
-            onChangeText={(text) => setCPF(text)}
+            value={cpf}
+            onChangeText={(text) => setcpf(text)}
             />
 
         <TextField

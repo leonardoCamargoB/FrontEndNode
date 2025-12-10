@@ -15,9 +15,7 @@ const RenderLogin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [touched, setTouched] = useState
-    <{email: boolean; password: boolean}>
-    ({email: false, password: false});
+    const [touched, setTouched] = useState<{email?: boolean; password?: boolean}>({});
 
     const errors = useMemo(() =>{
         const errors: Record<string, string> = {};
