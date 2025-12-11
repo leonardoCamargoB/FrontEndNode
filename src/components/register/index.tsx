@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import { Dimensions, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Dimensions, Text, TouchableOpacity, View } from "react-native";
 import AuthContainer from "../ui/AuthContainer";
 import PasswordField from "../ui/PasswordField";
 import { global } from "../ui/styles";
@@ -8,10 +8,8 @@ import TextField from '../ui/TextField';
 
 
 function isValidEmail(email: string) {
-    return /^[^\s@&='"!]@[^\s@&='"!].[^\s@&='"!]$/.test(email);
+    return /^[^\s@&='"!]+@[^\s@&='"!]+\.[^\s@&='"!]+$/.test(email);
 }
-
-
 
 const RenderRegister = () => {
         const [email, setEmail] = useState("");
@@ -37,11 +35,39 @@ const RenderRegister = () => {
                 return errors;
             }, [email, password, confPassword, nome, cpf, telefone, touched]);
 
-            const canSubmit = email && Object.keys(errors).length === 0 && !loading;
+            const canSubmit = 
+                email && 
+                password &&
+                nome &&
+                cpf &&
+                telefone &&
+                confPassword &&
+                Object.keys(errors).length === 0 && 
+                !loading;
 
-    const handleSubmit =  async () => {   
-    router.replace("/(auth)");
-    }
+    const handleSubmit = async () => {
+        try {
+        setLoading(true);
+        console.log("[REGISTER] Tentando registrar: ", {
+            email: email,
+            password: password,
+            nome: nome,
+            cpf: cpf,
+            telefone: telefone
+        });
+        await new Promise((req) => setTimeout(req, 1500));
+        
+        Alert.alert("Cadastro realizado com sucesso!");
+        router.replace("/(tabs)/explorer");
+
+        }
+        catch (erro) {
+        Alert.alert("Erro", "Falha ao tentar cadastrar!");
+        }
+        finally {
+            setLoading(false);
+        }
+    };
         
     const router = useRouter();
     const {height, width} = Dimensions.get("window");
@@ -55,30 +81,32 @@ const RenderRegister = () => {
             label="Nome"
             icon={{ lib: "FontAwesome6", name: "drive-file-rename-outline"}}
             placeholder="digite o seu nome"
-            keyboardType="email-address"
+            keyboardType="default"
             value={nome}
             onChangeText={(text) => setNome(text)}
+            onBlur={() => setTouched({...touched, nome:true})}
             />
 
         <TextField
             label="CPF"
             icon={{ lib: "FontAwesome6", name: "123"}}
             placeholder="xxx.xxx.xxx-xx"
-            keyboardType="email-address"
+            keyboardType="numeric"
             value={cpf}
             onChangeText={(text) => setcpf(text)}
+            onBlur={() => setTouched({...touched, cpf:true})}
             />
 
         <TextField
             label="Telefone"
             icon={{ lib: "FontAwesome6", name: "local-phone"}}
             placeholder="(xx) xxxxx-xxxx"
-            keyboardType="email-address"
+            keyboardType="numeric"
             value={telefone}
             onChangeText={(text) => setTelefone(text)}
+            onBlur={() => setTouched({...touched, telefone:true})}
             />
 
-            
         <TextField
             label="E-mail"
             icon={{ lib: "FontAwesome6", name: "email"}}
@@ -86,13 +114,16 @@ const RenderRegister = () => {
             keyboardType="email-address"
             value={email}
             onChangeText={(text) => setEmail(text)}
+            onBlur={() => setTouched({...touched, email:true})}
             />
+
         <PasswordField
             label="Senha"
             icon={{ lib: "FontAwesome6", name: "lock"}}
             placeholder="******"
             value={password}
             onChangeText={(text) => setPassword(text)}
+            onBlur={() => setTouched({...touched, password:true})}
             />
 
         <PasswordField
@@ -101,13 +132,13 @@ const RenderRegister = () => {
             placeholder="******"
             value={confPassword}
             onChangeText={(text) => setConfPassword(text)}
+            onBlur={() => setTouched({...touched, confPassword:true})}
             />
         
     <TouchableOpacity style={[global.primaryButton]} onPress={handleSubmit} disabled={!canSubmit}>
             <Text style={global.primaryButtonText}>Cadastre-se</Text>
         </TouchableOpacity>
 
-        
                 <View style={{alignItems: "center", marginTop: height * 0.03}}>
                     <View style={{backgroundColor: "#7c8390ff", width: width * 0.5, height: height * 0.001,
                         borderRadius: 10, marginTop: height * 0.03}}></View>
@@ -118,7 +149,6 @@ const RenderRegister = () => {
                 </View>
 
         </AuthContainer>
-
 
     );
 }

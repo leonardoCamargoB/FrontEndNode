@@ -1,21 +1,21 @@
 import { useRouter } from "expo-router";
-import { Dimensions, Text, TouchableOpacity, View } from "react-native";
+import { useMemo, useState } from "react";
+import { Alert, Dimensions, Text, TouchableOpacity, View } from "react-native";
 import AuthContainer from "../ui/AuthContainer";
 import PasswordField from "../ui/PasswordField";
 import { global } from "../ui/styles";
 import TextField from '../ui/TextField';
-import { useMemo, useState } from "react";   
 
 function isValidEmail(email: string) {
-    return /^[^\s@&='"!]@[^\s@&='"!].[^\s@&='"!]$/.test(email);
+    return /^[^\s@&='"!]+@[^\s@&='"!]+\.[^\s@&='"!]+$/.test(email);
 }
 
-
 const RenderLogin = () => {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [touched,  ] = useState<{email?: boolean; password?: boolean}>({});
+    const [touched, setTouched] = useState<{email?: boolean; password?: boolean}>({});
 
     const errors = useMemo(() =>{
         const errors: Record<string, string> = {};
@@ -23,19 +23,36 @@ const RenderLogin = () => {
         if(touched.password && !password) errors.password = "A senha é obrigatória.";
         if(touched.password && password.length < 6)  errors.password = "A senha deve ter no mínimo 6 caracteres.";
         if(touched.email && email && !isValidEmail(email)) errors.email = "O e-mail é inválido, Digite um e-mail válido.";
-        
-        
-        
         return errors;
     }, [email, password, touched]);
     
     const canSubmit = email && password && Object.keys(errors).length === 0 && !loading;
 
-    const handleSubmit =  async () => {
-    router.replace("/(tabs)/explorer");
+const handleSubmit = async () => {
+    try {
+    setLoading(true);
+    console.log("[LOGIN] Tentando login com: ", {
+        email: email,
+        password: password
+    });
+    await new Promise((req) => setTimeout(req, 2000));
+    if (email === "leo@gmail.com" && password === "123") {
+        Alert.alert("Login bem-sucedido!");
+        router.replace("/(tabs)/explorer");
     }
+    else {
+        Alert.alert("Login inválido!");
+        return;
+    }      
+    }
+    catch (erro) {
+    Alert.alert("Erro", "Falha ao tentar logar!");
+    }
+    finally {
+        setLoading(false);
+    }
+};
 
-    const router = useRouter();
     const {height, width} = Dimensions.get("window");
     return( 
         <AuthContainer 
@@ -79,10 +96,7 @@ const RenderLogin = () => {
         </View>
 </View>
 
-
         </AuthContainer>
-
-
     );
 }
 
