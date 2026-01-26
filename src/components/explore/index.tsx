@@ -2,9 +2,11 @@ import AuthContainer from '@/components/ui/AuthContainer';
 import RenderDatePicker from '@/components/ui/DatePicker';
 import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { useState } from 'react';
-import { Dimensions, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Text, TouchableOpacity, View } from 'react-native';
 import RoomCard from '../ui/RoomCard';
 import TextField from '../ui/TextField';
+import InputSpin from '../ui/inputSpin';
+import { global } from '../ui/styles';
 
 const RenderExplore = () => {
 const { width, height } = Dimensions.get('window');
@@ -38,6 +40,7 @@ return (
             setCalendar(null);
             ;}}/>)}
             </View>
+            
         <View style={{display:"flex", flexDirection:"column"}}>
         {/*Input do checkout para abrir o calendario*/}
         <TouchableOpacity onPress={() => setCalendar("checkout")}>
@@ -54,8 +57,16 @@ return (
             <RenderDatePicker onSelectDate={(date) => {
                 setCheckOut(date)
                 setCalendar(null);
-            }}/>)}
+            }}
+            />
+            )}
+            </View>{""}
+
+            <View>
+            <Text style={global.label}>Quantidade de hóspedes</Text>
+            <InputSpin/>
             </View>
+
         </View>
         <RoomCard
         image={require("../../assets/imgs/img.jpg")}
