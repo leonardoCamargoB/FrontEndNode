@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import DatePicker, { getToday } from "react-native-modern-datepicker";
 
 type Props ={
@@ -31,8 +31,6 @@ return (
             borderRadius: 15,
             width: width * 0.69, 
             height: "auto",
-            position: "absolute",
-            zIndex: 1
         }}
         isGregorian={true}
         minimumDate={today}
