@@ -2,7 +2,7 @@ import AuthContainer from '@/components/ui/AuthContainer';
 import RenderDatePicker from '@/components/ui/DatePicker';
 import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { useState } from 'react';
-import { Dimensions, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import RoomCard from '../ui/RoomCard';
 import TextField from '../ui/TextField';
 import InputSpin from '../ui/inputSpin';
@@ -14,6 +14,10 @@ const { width, height } = Dimensions.get('window');
     const [checkIn, setCheckIn] = useState("");
     const [checkOut, setCheckOut] = useState("");
     const [calendar, setCalendar] = useState<"checkin" | "checkout" | null>(null);
+    const [qntGuests, setQntGuests] = useState<number>(1);
+
+    const closeCalendar = ()=> setCalendar(null);
+
     type NameIcon = 
     | {lib: "MaterialIcons"; name: keyof typeof MaterialIcons.glyphMap }
     | {lib: "FontAwesome6"; name: keyof typeof FontAwesome6.glyphMap }
@@ -34,11 +38,6 @@ return (
         />  
     </View>
         </TouchableOpacity>
-        {calendar === "checkin" && (
-            <RenderDatePicker onSelectDate={(date) => {
-            setCheckIn(date)
-            setCalendar(null);
-            ;}}/>)}
             </View>
             
         <View style={{display:"flex", flexDirection:"column"}}>
@@ -53,18 +52,53 @@ return (
         />
     </View>
         </TouchableOpacity>
-        {calendar === "checkout" && (
-            <RenderDatePicker onSelectDate={(date) => {
-                setCheckOut(date)
-                setCalendar(null);
-            }}
-            />
-            )}
             </View>{""}
+            <Modal
+            transparent
+            animationType="fade"
+            visible={calendar !== null}
+            onRequestClose={closeCalendar}
+            >     
+            <Pressable
+                style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#rgb(0,0,0, 0.25)",
+            }} 
+            onPress={closeCalendar} >
+                <Pressable onPress={()=>{}}>
+
+                        {calendar === "checkin" && (
+                <RenderDatePicker onSelectDate={(date) => {
+                setCheckIn(date)
+                closeCalendar;
+                ;}}/>)}
+
+                        {calendar === "checkout" && (
+                <RenderDatePicker onSelectDate={(date) => {
+                setCheckOut(date)
+                closeCalendar;
+                }}
+                />
+                )}
+                </Pressable>
+                </Pressable>
+            </Modal>
 
             <View>
             <Text style={global.label}>Quantidade de hóspedes</Text>
-            <InputSpin/>
+            <InputSpin
+                 guests={qntGuests}
+                 onSelectSpin={(guests)=>{
+                    setQntGuests(guests); 
+                }}
+                maxGuests={6}
+                minGuests={1}
+                step={1}
+                colorMax='#DC143C'
+                colorMin='#DC143C'
+            />
             </View>
 
         </View>
@@ -73,7 +107,7 @@ return (
         label="Apartamento"
         icon={{
         lib:"FontAwesome5",
-        name:"bed"
+        name:"bed" 
         }} 
         description={{
             title:"Descrição do Quarto",
