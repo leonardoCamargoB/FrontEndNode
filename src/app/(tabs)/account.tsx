@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native';
+import RenderAccount from "@/components/account";
+import AuthContainer from "@/components/ui/AuthContainer";
 
-const account = () =>{
-    return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Tab [Home|Reservations]</Text>
-    </View>
-);
+const account = () => {
+  return (
+    <AuthContainer>
+      <RenderAccount />
+    </AuthContainer>
+  );
 };
 export default account;

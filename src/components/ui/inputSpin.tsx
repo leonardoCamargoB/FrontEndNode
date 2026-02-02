@@ -29,5 +29,5 @@ const InputSpin = ({ guests, onSelectSpin, minGuests, maxGuests, step, colorMax,
     />
   );
 };
-
+ 
 export default InputSpin;

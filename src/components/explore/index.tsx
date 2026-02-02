@@ -89,8 +89,8 @@ return (
             <View>
             <Text style={global.label}>Quantidade de hóspedes</Text>
             <InputSpin
-                 guests={qntGuests}
-                 onSelectSpin={(guests)=>{
+                    guests={qntGuests}
+                    onSelectSpin={(guests)=>{
                     setQntGuests(guests); 
                 }}
                 maxGuests={6}
