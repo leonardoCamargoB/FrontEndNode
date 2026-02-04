@@ -5,6 +5,7 @@ import AuthContainer from "../ui/AuthContainer";
 import PasswordField from "../ui/PasswordField";
 import { global } from "../ui/styles";
 import TextField from '../ui/TextField';
+import MaskInput from "react-native-mask-input";
 
 function isValidEmail(email: string) {
     return /^[^\s@&='"!]+@[^\s@&='"!]+\.[^\s@&='"!]+$/.test(email);

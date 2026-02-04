@@ -6,8 +6,7 @@ import { View } from 'react-native';
 const reservations = () => {
     return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <RoomCard></RoomCard>
-            <RenderCart></RenderCart>
+        
         </View>
 );
 };

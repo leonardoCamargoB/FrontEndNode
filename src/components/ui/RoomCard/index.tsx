@@ -1,5 +1,5 @@
 import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
-import { Dimensions, Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Image, ImageSourcePropType, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { global } from "../styles";
 
 type NameIcon =
@@ -14,20 +14,34 @@ type Props = {
   label?: string;
   description?: Infos;
   icon?: NameIcon;
+  onPress?: () => void;
 };
 
+
 const { width, height } = Dimensions.get("window");
-const RoomCard = ({ image, label, description, icon }: Props) => {
+
+const RoomCard = ({ image, label, description, icon, onPress }: Props) => {
   return (
     <View style={global.content}>
-    {!!image &&
-      <View><Image style={styles.image} source={image} resizeMode="cover"/></View>}
+
+      {!!image && (
+        <View>
+          <Image style={styles.image} source={image} resizeMode="cover" />
+        </View>
+      )}
+
       <View>
-        {!!label && <Text style={{fontSize: 23, fontWeight: 600, marginTop: height * 0.02}}>{label}</Text>}
+        {!!label && (
+          <Text style={{ fontSize: 23, fontWeight: 600, marginTop: height * 0.02 }}>
+            {label}
+          </Text>
+        )}
+
         <View style={styles.container}>
-          <View style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-evenly"}}>
+          <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-evenly" }}>
+            
             {!!icon && (
-              <View style={{marginTop: height * 0.04}}>
+              <View style={{ marginTop: height * 0.04 }}>
                 {icon.lib === "MaterialIcons" && (
                   <MaterialIcons name={icon.name} size={22} color="black" />
                 )}
@@ -39,6 +53,7 @@ const RoomCard = ({ image, label, description, icon }: Props) => {
                 )}
               </View>
             )}
+
             {!!description && (
               <View style={styles.description}>
                 <View>
@@ -47,13 +62,23 @@ const RoomCard = ({ image, label, description, icon }: Props) => {
                   )}
                   <Text style={styles.text}>{description.text}</Text>
                 </View>
-                <View style={{marginTop: height * 0.04}}>
+
+                <View style={{ marginTop: height * 0.04 }}>
                   <Text style={styles.price}>R$ {description.price}</Text>
                 </View>
               </View>
             )}
+
           </View>
         </View>
+
+        {/* 🔽 BOTÃO PARA ABRIR MODAL */}
+        {!!onPress && (
+          <TouchableOpacity style={styles.detailsButton} onPress={onPress}>
+            <Text style={styles.detailsButtonText}>Ver detalhes</Text>
+          </TouchableOpacity>
+        )}
+
       </View>
     </View>
   );
@@ -69,6 +94,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 2,
   },
+
   container: {
     marginTop: height * 0.03,
     backgroundColor: "#444444",
@@ -78,6 +104,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 2,
   },
+
   description: {
     display: "flex",
     flexDirection: "row",
@@ -86,15 +113,36 @@ const styles = StyleSheet.create({
     width: "auto",
     justifyContent: "space-between",
   },
+
   text: {
     fontSize: 15,
   },
+
   price: {
-    height: "auto", width: width * 0.7,
+    width: width * 0.7,
     fontSize: 17,
-    fontWeight: 700,
+    fontWeight: "700",
     marginLeft: 10,
-    color: "black"
-  }
+    color: "black",
+  },
+
+  detailsButton: {
+    marginTop: height * 0.025,
+    backgroundColor: "#DC143C",
+    height: height * 0.06,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  detailsButtonText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "600",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+  },
 });
+
+
 export default RoomCard;

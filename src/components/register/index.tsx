@@ -36,7 +36,7 @@ const RenderRegister = () => {
             }, [email, password, confPassword, nome, cpf, telefone, touched]);
 
             const canSubmit = 
-                email && 
+                email &&
                 password &&
                 nome &&
                 cpf &&
