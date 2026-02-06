@@ -99,10 +99,6 @@ const styles = StyleSheet.create({
     marginTop: height * 0.03,
     backgroundColor: "#444444",
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 2,
   },
 
   description: {

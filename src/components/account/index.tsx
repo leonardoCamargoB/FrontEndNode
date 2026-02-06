@@ -42,8 +42,6 @@
         return;
         }
 
-        // 👉 Aqui entraria a chamada da API
-        // await api.put('/change-password', { oldPassword, newPassword });
 
         Alert.alert("Sucesso", "Senha alterada com sucesso!");
         resetAndClose();

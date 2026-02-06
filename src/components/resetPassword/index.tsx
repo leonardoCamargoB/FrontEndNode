@@ -49,7 +49,7 @@ const RenderResetPassword = () => {
         <AuthContainer        
             title="Redefinição de Senha!"
             subtitle="Digite o seu e-mail para receber redefinir senha!"
-            icon="hotel"
+            icon={{ lib: "FontAwesome5", name: "hotel" }}  
             setaEsquerda={
                 <TouchableOpacity onPress={() => router.back()}>
                     <MaterialIcons name="arrow-back-ios" size={24} color="black"/>
@@ -59,7 +59,7 @@ const RenderResetPassword = () => {
 
             <TextField
                 label="E-mail"
-                icon={{ lib: "FontAwesome6", name: "email" }}
+                icon={{ lib: "MaterialIcons", name: "alternate-email" }}
                 placeholder="user@gmail.com"
                 keyboardType="email-address"
                 value={email}

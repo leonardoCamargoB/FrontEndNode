@@ -5,6 +5,7 @@ import AuthContainer from "../ui/AuthContainer";
 import PasswordField from "../ui/PasswordField";
 import { global } from "../ui/styles";
 import TextField from '../ui/TextField';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
 function isValidEmail(email: string) {
@@ -75,11 +76,16 @@ const RenderRegister = () => {
         <AuthContainer 
             title="Bem-vindo!"
             subtitle="Faça Cadastro para continuar!"
-            icon="hotel">
+            setaEsquerda={
+                <TouchableOpacity onPress={() => router.back()}>
+                    <MaterialIcons name="arrow-back-ios" size={24} color="black"/>
+                </TouchableOpacity>
+            }
+            >
 
         <TextField
             label="Nome"
-            icon={{ lib: "FontAwesome6", name: "drive-file-rename-outline"}}
+            icon={{ lib: "MaterialIcons", name: "people"}}
             placeholder="digite o seu nome"
             keyboardType="default"
             value={nome}
@@ -89,7 +95,7 @@ const RenderRegister = () => {
 
         <TextField
             label="CPF"
-            icon={{ lib: "FontAwesome6", name: "123"}}
+            icon={{ lib: "MaterialIcons", name: "format-list-numbered" }}
             placeholder="xxx.xxx.xxx-xx"
             keyboardType="numeric"
             value={cpf}
@@ -99,7 +105,8 @@ const RenderRegister = () => {
 
         <TextField
             label="Telefone"
-            icon={{ lib: "FontAwesome6", name: "local-phone"}}
+            icon={{ lib: "MaterialIcons", name: "phone"}}
+
             placeholder="(xx) xxxxx-xxxx"
             keyboardType="numeric"
             value={telefone}
@@ -109,7 +116,7 @@ const RenderRegister = () => {
 
         <TextField
             label="E-mail"
-            icon={{ lib: "FontAwesome6", name: "email"}}
+            icon={{ lib: "MaterialIcons", name: "alternate-email" }}
             placeholder="user@gmail.com"
             keyboardType="email-address"
             value={email}

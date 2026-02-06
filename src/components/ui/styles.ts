@@ -46,11 +46,6 @@ export const global = StyleSheet.create({
         backgroundColor: "#2D2D2D",
         borderWidth: 1,
         borderColor: "#444444",
-        shadowColor: "#000",
-        shadowOpacity: 0.25,
-        shadowOffset: { width: 0, height: 6 },
-        shadowRadius: 14,
-        elevation: 10,
     },
 
     inputGroup: {

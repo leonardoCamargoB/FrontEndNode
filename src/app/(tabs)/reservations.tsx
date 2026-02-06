@@ -1,13 +1,15 @@
 
 import RenderCart from '@/components/carrinho';
+import RenderReservations from '@/components/reservations';
+import AuthContainer from '@/components/ui/AuthContainer';
 import RoomCard from '@/components/ui/RoomCard';
 import { View } from 'react-native';
 
 const reservations = () => {
     return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        
-        </View>
+        <AuthContainer>
+        <RenderReservations/>
+    </AuthContainer>
 );
 };
 export default reservations;

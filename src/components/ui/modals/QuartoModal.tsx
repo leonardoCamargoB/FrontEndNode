@@ -1,17 +1,7 @@
     import { useRouter } from "expo-router";
-    import {
-        Dimensions,
-        Image,
-        Modal,
-        ScrollView,
-        StyleSheet,
-        Text,
-        TouchableOpacity,
-        View,
-    } from "react-native";
-
+    import {Dimensions,Image,Modal,ScrollView,StyleSheet,Text,TouchableOpacity,View,} from "react-native";
     const { width, height } = Dimensions.get("window");
-
+    
     type RoomDetailsModalProps = {
     visible: boolean;
     onClose: () => void;
@@ -22,6 +12,9 @@
         price: number;
         image: any;
         details?: string[];
+        estadia?: string;
+        checkIn?: string;
+        checkOut?: string;
     };
     };
 
@@ -52,6 +45,25 @@
 
                 {/* Descrição */}
                 <Text style={styles.description}>{room.description}</Text>
+
+                {/*Check-in e Check-out*/}
+                {room.checkIn && room.checkOut && (
+                <View style={styles.infoBox}>
+                    <Text style={styles.infoText}>Check-in: {room.checkIn}</Text>
+                    <Text style={styles.infoText}>Check-out: {room.checkOut}</Text>
+                </View>
+                )}
+
+                {/*Tempo estadia*/}
+                {room.estadia && (room.estadia.length > 0) && (
+                <View style={styles.infoBox}>
+                    {room.estadia.split('\n').map((line, index) => (
+                    <Text key={index} style={styles.infoText}>
+                        • {line}
+                    </Text>
+                    ))}
+                </View>
+                )}
 
                 {/* Detalhes dinâmicos */}
                 {room.details && room.details.length > 0 && (

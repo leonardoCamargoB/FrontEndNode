@@ -3,12 +3,12 @@ import RenderDatePicker from "@/components/ui/DatePicker";
 import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
-    Dimensions,
-    Modal,
-    Pressable,
-    Text,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  Modal,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import RoomCard from "../ui/RoomCard";
 import TextField from "../ui/TextField";
@@ -65,80 +65,90 @@ const RenderExplore = () => {
             animationType="fade"
             visible={calendar !== null}
             onRequestClose={closeCalendar}
-        >
+          >
             <Pressable
-            style={{
+              style={{
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
                 backgroundColor: "#rgb(0,0,0, 0.25)",
-            }}
-            onPress={closeCalendar}
+              }}
+              onPress={closeCalendar}
             >
-            <Pressable onPress={() => {}}>
+              <Pressable onPress={() => {}}>
                 {calendar === "checkin" && (
-                <RenderDatePicker
+                  <RenderDatePicker
                     onSelectDate={(date) => {
-                    setCheckIn(date);
-                    closeCalendar;
+                      setCheckIn(date);
+                      closeCalendar;
                     }}
-                />
+                  />
                 )}
                 {calendar === "checkout" && (
-                <RenderDatePicker
+                  <RenderDatePicker
                     onSelectDate={(date) => {
-                    setCheckOut(date);
-                    closeCalendar;
+                      setCheckOut(date);
+                      closeCalendar;
                     }}
-                />
+                  />
                 )}
+              </Pressable>
             </Pressable>
-            </Pressable>
-        </Modal>
-        <View>
+          </Modal>
+          <View>
             <Text style={global.label}>Quantidade de hóspedes</Text>
             <InputSpin
-            guests={qntGuests}
-            onSelectSpin={(guests) => {
+              guests={qntGuests}
+              onSelectSpin={(guests) => {
                 setQntGuests(guests);
-            }}
-            maxGuests={6}
-            minGuests={1}
-            step={1}
-            colorMax="#DC143C"
-            colorMin="#DC143C"
+              }}
+              maxGuests={6}
+              minGuests={1}
+              step={1}
+              colorMax="#DC143C"
+              colorMin="#DC143C"
             />
-        </View>
+          </View>
         </View>
         <RoomCard
-        image={require("../../assets/imgs/img.jpg")}
-        label="Apartamento"
-        icon={{
+          image={require("../../assets/imgs/img.jpg")}
+          label="Apartamento"
+          icon={{
             lib: "FontAwesome5",
             name: "bed",
-        }}
-        description={{
+          }}
+          description={{
             title: "Descrição do Quarto",
             text: "1 cama de casal \n1 cama de solteiro",
             price: 180.9,
-        }}
-        onPress={() => setRoomModalVisible(true)}
+          }}
+          onPress={() => setRoomModalVisible(true)}
         />
         <QuartoModal
-        visible={roomModalVisible}
-        onClose={() => setRoomModalVisible(false)}
-        room={{
+          visible={roomModalVisible}
+          onClose={() => setRoomModalVisible(false)}
+          room={{
             title: "Apartamento",
             description:
-            " quarto confortável, ideal para casais ou famílias pequenas.",
+              "quarto confortável, ideal para casais ou famílias pequenas .",
+            estadia:
+              "Estadia mínima de 2 noites\nCheck-in a partir das 14h\nCheck-out até as 12h",
+            checkIn: "15/07/2026 - 14:00",
+            checkOut: "17/07/2026 - 12:00",
+            details: [
+              "Wi-Fi gratuito",
+              "Ar-condicionado",
+              "Cozinha compacta",
+              "Banheiro privativo",
+            ],
             beds: ["1 cama de casal", "1 cama de solteiro"],
             price: 180.9,
             image: require("../../assets/imgs/img.jpg"),
-        }}
+          }}
         />
-    </View>
+      </View>
     </AuthContainer>
-);
+  );
 };
 
 export default RenderExplore;
