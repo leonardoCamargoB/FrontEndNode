@@ -1,10 +1,13 @@
 /*   */
-import { Slot } from "expo-router";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { Stack } from "expo-router";
 
 const  RootLayout = () =>{
-    {/* Slot atribui ao fluxo de navegaçãp "child" o papel de definir como as telas navegarão entre si (ex: /(auth) ou /(tabs), sem impor uma forma de navegação no nivel raiz)*/}
-
-return <Slot/>
+    return(
+        <AuthProvider>
+           <Stack screenOptions={{ headerShown: false }}>
+        </AuthProvider>
+    )
 
 }
 

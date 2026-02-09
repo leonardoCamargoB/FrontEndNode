@@ -35,7 +35,7 @@
             borderWidth: 1,
             borderColor: "#2E2E2E",
             }}
-        >          
+        >           
             <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
             <FontAwesome5 name="bed" size={18} color="#DC143C" />
             <Text style={{ color: "#555555", fontSize: 17, fontWeight: "700" }}>Reserva Ativa</Text>
