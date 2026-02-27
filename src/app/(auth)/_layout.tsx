@@ -6,11 +6,24 @@ replace(): substitui uma tela a tela atual por outra
 
 */
 
+import { useAuth } from "@/contexts/AuthContext";
 
-
-import { Stack } from "expo-router";
+import { Redirect, Stack } from "expo-router";
 
 const AuthLayout =() =>{ 
+    
+
+    const { token, isLoanding } = useAuth();
+    // adicionar um componente de carregamento aqui, depois
+    if (isLoanding) return null; // Ou um componente de carregamento
+    
+    if (token) {
+        // Se o usuário já estiver autenticado, redireciona para a tela principal
+        return <Redirect href="/(tabs)/explorer" />;
+        
+    }
+    
+
     return(
     <Stack screenOptions={{headerShown: false}}>
             <Stack.Screen name="index" options={{title:"Login" }}/>
