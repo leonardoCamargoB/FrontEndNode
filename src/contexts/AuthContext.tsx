@@ -65,7 +65,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // 🔹 REGISTER
   async function signUp(data: RegisterData) {
-    const res = await fetch(`${API_URL}/clientes`, {
+    const res = await fetch(`${API_URL}/login/cadastro`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
