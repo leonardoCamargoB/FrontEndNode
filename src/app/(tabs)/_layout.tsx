@@ -6,9 +6,9 @@ import { useAuth } from "@/contexts/AuthContext";
 
 
 export default function TabLayout() {
-    const { token, isLoanding } = useAuth();
+    const { token, isLoading } = useAuth();
     // adicionar um componente de carregamento aqui, depois
-    if (isLoanding) return null; // Ou um componente de carregamento
+    if (isLoading) return null; // Ou um componente de carregamento
     if(!token) {
         // Se o usuário não estiver autenticado, redireciona para a tela de login
         return <Redirect href="/(auth)" />;

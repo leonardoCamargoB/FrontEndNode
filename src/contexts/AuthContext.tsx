@@ -18,7 +18,7 @@ type RegisterData = {
 
 type AuthContextType = {
   token: string | null;
-  isLoanding: boolean;
+  isLoading: boolean;
   signIn: (email: string, senha: string) => Promise<void>;
   signUp: (data: RegisterData) => Promise<void>;
   signOut: () => Promise<void>;
@@ -28,16 +28,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
-  const [isLoanding, setIsLoanding] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // 🔹 Carrega token ao abrir o app
   useEffect(() => {
     (async () => {
       try {
         const stored = await AsyncStorage.getItem("token");
         if (stored) setToken(stored);
       } finally {
-        setIsLoanding(false);
+        setIsLoading(false);
       }
     })();
   }, []);
@@ -78,7 +77,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       throw new Error(err?.message || "Erro ao cadastrar");
     }
 
-    // 🔥 Se backend já retorna token no cadastro
+  
     const tokenAPI: string | null = await res.json().catch(() => null);
 
     if (tokenAPI) {
@@ -96,12 +95,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const value = useMemo(
     () => ({
       token,
-      isLoanding,
+      isLoading,
       signIn,
       signUp,
       signOut,
     }),
-    [token, isLoanding],
+    [token, isLoading],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,16 +1,16 @@
     import { useAuth } from "@/contexts/AuthContext";
+    import { FontAwesome6 } from "@expo/vector-icons";
+    import { useRouter } from "expo-router";
     import { useState } from "react";
     import {
-    Alert,
-    Modal,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+        Alert,
+        Modal,
+        StyleSheet,
+        Text,
+        TouchableOpacity,
+        View,
     } from "react-native";
     import { Masks } from "react-native-mask-input";
-    import { useRouter } from "expo-router";
-    import { FontAwesome6 } from "@expo/vector-icons";
 
     import AuthContainer from "../ui/AuthContainer";
     import PasswordField from "../ui/PasswordField";
@@ -86,9 +86,7 @@
                 style={styles.modalPrimaryButton}
                 onPress={handleChangePassword}
             >
-                <Text style={styles.modalPrimaryText}>
-                Confirmar alteração
-                </Text>
+                <Text style={styles.modalPrimaryText}>Confirmar alteração</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={resetAndClose}>
@@ -125,11 +123,7 @@
             <Text style={styles.headerTitle}>Minha Conta</Text>
 
             <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-            <FontAwesome6
-                name="right-from-bracket"
-                size={16}
-                color="#DC143C"
-            />
+            <FontAwesome6 name="right-from-bracket" size={16} color="#DC143C" />
             <Text style={styles.logoutText}>Sair</Text>
             </TouchableOpacity>
         </View>
@@ -177,9 +171,7 @@
             style={styles.secondaryButton}
             onPress={() => setShowPasswordModal(true)}
             >
-            <Text style={styles.buttonText}>
-                Privacidade e Segurança
-            </Text>
+            <Text style={styles.buttonText}>Privacidade e Segurança</Text>
             </TouchableOpacity>
         </View>
 
