@@ -13,8 +13,8 @@ export const global = StyleSheet.create({
     },
 
     container: {
-        paddingHorizontal: width * 0.04,
-        paddingVertical: height * 0.045,
+        paddingHorizontal: width * 0.02,
+        paddingVertical: height * 0.00045,
     },
 
     header: {

@@ -24,7 +24,6 @@ const RenderExplore = () => {
   const [calendar, setCalendar] = useState<"checkin" | "checkout" | null>(null);
   const [qntGuests, setQntGuests] = useState<number>(1);
 
-  // 🔹 ADICIONADO (sem mudar lógica)
   const [roomModalVisible, setRoomModalVisible] = useState(false);
 
   const closeCalendar = () => setCalendar(null);
@@ -38,6 +37,7 @@ const RenderExplore = () => {
     <AuthContainer>
       <View style={{ display: "flex", justifyContent: "center" }}>
         <View style={{ display: "flex", flexDirection: "column" }}>
+          {/* CHECK-IN */}
           <TouchableOpacity onPress={() => setCalendar("checkin")}>
             <View style={{ width: width * 0.9 }}>
               <TextField
@@ -49,6 +49,7 @@ const RenderExplore = () => {
             </View>
           </TouchableOpacity>
 
+          {/* CHECK-OUT */}
           <TouchableOpacity onPress={() => setCalendar("checkout")}>
             <View style={{ width: width * 0.9 }}>
               <TextField
@@ -60,6 +61,7 @@ const RenderExplore = () => {
             </View>
           </TouchableOpacity>
 
+          {/* MODAL CALENDÁRIO */}
           <Modal
             transparent
             animationType="fade"
@@ -71,7 +73,7 @@ const RenderExplore = () => {
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "#rgb(0,0,0, 0.25)",
+                backgroundColor: "rgba(0,0,0,0.25)",
               }}
               onPress={closeCalendar}
             >
@@ -80,36 +82,75 @@ const RenderExplore = () => {
                   <RenderDatePicker
                     onSelectDate={(date) => {
                       setCheckIn(date);
-                      closeCalendar;
+                      closeCalendar();
                     }}
                   />
                 )}
+
                 {calendar === "checkout" && (
                   <RenderDatePicker
                     onSelectDate={(date) => {
                       setCheckOut(date);
-                      closeCalendar;
+                      closeCalendar();
                     }}
                   />
                 )}
               </Pressable>
             </Pressable>
           </Modal>
-          <View>
+
+          {/* HÓSPEDES */}
+          <View
+            style={{
+              marginBottom: height * 0.035, // ✅ espaço antes do RoomCard
+            }}
+          >
             <Text style={global.label}>Quantidade de hóspedes</Text>
-            <InputSpin
-              guests={qntGuests}
-              onSelectSpin={(guests) => {
-                setQntGuests(guests);
+
+          <InputSpin
+            guests={qntGuests}
+            onSelectSpin={(guests) => {
+              setQntGuests(guests);
+            }}
+            maxGuests={6}
+            minGuests={1}
+            step={1}
+            colorMax="#DC143C"
+            colorMin="#DC143C"
+          />
+
+            {/* BOTÃO CONSULTA */}
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                width: width * 0.9,
+                marginTop: height * 0.02,
+                backgroundColor: "#DC143C",
+                paddingVertical: 14,
+                borderRadius: 10,
+                alignItems: "center",
+                justifyContent: "center",
+                alignSelf: "center",
+                elevation: 3,
               }}
-              maxGuests={6}
-              minGuests={1}
-              step={1}
-              colorMax="#DC143C"
-              colorMin="#DC143C"
-            />
+              onPress={() => {
+                console.log("Consulta realizada");
+              }}
+            >
+              <Text
+                style={{
+                  color: "#FFF",
+                  fontSize: 16,
+                  fontWeight: "600",
+                }}
+              >
+                Consulta
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
+
+        {/* CARD QUARTO */}
         <RoomCard
           image={require("../../assets/imgs/img.jpg")}
           label="Apartamento"
@@ -124,24 +165,32 @@ const RenderExplore = () => {
           }}
           onPress={() => setRoomModalVisible(true)}
         />
+
+        {/* MODAL QUARTO */}
         <QuartoModal
           visible={roomModalVisible}
           onClose={() => setRoomModalVisible(false)}
           room={{
             title: "Apartamento",
             description:
-              "quarto confortável, ideal para casais ou famílias pequenas .",
+              "Apartamento moderno e aconchegante, ideal para casais, famílias pequenas ou viagens a trabalho. O espaço é bem iluminado, ventilado e decorado com estilo contemporâneo, proporcionando conforto e praticidade durante toda a estadia. Local tranquilo, perfeito para descanso, com fácil acesso às principais áreas da cidade..",
             estadia:
-              "Estadia mínima de 2 noites\nCheck-in a partir das 14h\nCheck-out até as 12h",
+              "Estadia mínima de 2 noites. Check-in a partir das 14h. Check-out até às 12h.",
             checkIn: "15/07/2026 - 14:00",
             checkOut: "17/07/2026 - 12:00",
             details: [
-              "Wi-Fi gratuito",
+              "Wi-Fi gratuito de alta velocidade",
               "Ar-condicionado",
-              "Cozinha compacta",
-              "Banheiro privativo",
+              "Smart TV",
+              "Cozinha compacta equipada \n (micro-ondas, fogão e utensílios básicos)",
+              "Banheiro privativo com chuveiro quente",
+              "Roupa de cama e toalhas inclusas",
+              "Espaço limpo e higienizado \n antes de cada estadia",
             ],
-            beds: ["1 cama de casal", "1 cama de solteiro"],
+            beds: [
+              "1 cama de casal confortável",
+              "1 cama de solteiro adicional",
+            ],
             price: 180.9,
             image: require("../../assets/imgs/img.jpg"),
           }}

@@ -1,12 +1,6 @@
 import { API_URL } from "@/constants/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 type RegisterData = {
   nome: string;
@@ -77,13 +71,23 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       throw new Error(err?.message || "Erro ao cadastrar");
     }
 
-  
     const tokenAPI: string | null = await res.json().catch(() => null);
 
     if (tokenAPI) {
       await AsyncStorage.setItem("token", tokenAPI);
       setToken(tokenAPI);
     }
+  }
+
+  // CONSULTA
+  async function consulta(inicio: string, fim: string, quantidade: number) {
+    const res = await fetch(`${API_URL}/quartosDisponiveis"`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ inicio, fim, quantidade }),
+    });
   }
 
   // 🔹 LOGOUT

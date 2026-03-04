@@ -1,20 +1,31 @@
-import { Dimensions, View } from "react-native";
-import DatePicker, { getToday } from "react-native-modern-datepicker";
+    import { Dimensions, View } from "react-native";
+    import DatePicker, { getToday } from "react-native-modern-datepicker";
 
-type Props ={
+    type Props = {
     onSelectDate: (date: string) => void;
-};
+    };
 
-const RenderDatePicker = ({onSelectDate}:  Props) => {
+    const RenderDatePicker = ({ onSelectDate }: Props) => {
+    const { width } = Dimensions.get("window");
+    const today = getToday();
 
-const { width, height } = Dimensions.get('window');
-const today = getToday();
+    const handleChange = (date: string) => {
+        onSelectDate?.(date);
+    };
 
-return (
-    <View style={[ { width: width * 0.9 }]}>
+    return (
+        <View
+        style={{
+            width: width * 0.9,
+            position: "relative",
+        }}
+        >
         <DatePicker
-        mode="calendar"
-        options={{
+            mode="calendar"
+            current={today}
+            minimumDate={today}
+            isGregorian={true}
+            options={{
             backgroundColor: "#090C08",
             textHeaderColor: "#ff5b5bff",
             textDefaultColor: "#f6c1c1ff",
@@ -26,21 +37,20 @@ return (
             textFontSize: 12,
             headerAnimationDistance: 8,
             daysAnimationDistance: 6,
-        }}
-        style={ { 
+            }}
+            style={{
             borderRadius: 15,
-            width: width * 0.69, 
-            height: "auto",
-        }}
-        isGregorian={true}
-        minimumDate={today}
-        onSelectedChange={(date) => {
-            onSelectDate(date);
-        }}
+            width: width * 0.69,
+            zIndex: 1,
+            }}
+            // ✅ funciona corretamente
+            onSelectedChange={handleChange}
+
+            // ✅ workaround do bug da lib
+            onDateChange={handleChange}
         />
+        </View>
+    );
+    };
 
-    </View>
-);
-};
-
-export default RenderDatePicker;
+    export default RenderDatePicker;
