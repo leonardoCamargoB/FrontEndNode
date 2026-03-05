@@ -92,7 +92,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (!res.ok) {
       const err = await res.json().catch(() => null);
-      throw new Error(err?.message || "Erro ao fazer a Consulta");
+      throw new Error(err?.message || "Sem quartos disponiveis");
     }
 
     const json = await res.json();

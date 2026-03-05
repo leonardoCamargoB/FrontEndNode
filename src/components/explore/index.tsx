@@ -11,12 +11,14 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 import RoomCard from "../ui/RoomCard";
 import TextField from "../ui/TextField";
 import InputSpin from "../ui/inputSpin";
 import QuartoModal from "../ui/modals/QuartoModal";
 import { global } from "../ui/styles";
+
 
 const RenderExplore = () => {
   const { width, height } = Dimensions.get("window");
@@ -138,7 +140,12 @@ const RenderExplore = () => {
                 elevation: 3,
               }}
               onPress={async () => {
-                consulta(checkIn, checkOut, qntGuests);
+                try{
+                  await consulta(checkIn, checkOut, qntGuests);
+                } 
+                catch(erro: any){
+                  Alert.alert("Nessas datas", erro?.message || "Sem quartos disponiveis");
+                }
               }}
             >
               <Text
