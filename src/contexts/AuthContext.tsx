@@ -16,6 +16,7 @@ type AuthContextType = {
   signIn: (email: string, senha: string) => Promise<void>;
   signUp: (data: RegisterData) => Promise<void>;
   signOut: () => Promise<void>;
+  consulta: (inicio: string, fim: string, quantidade: number) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -81,13 +82,21 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // CONSULTA
   async function consulta(inicio: string, fim: string, quantidade: number) {
-    const res = await fetch(`${API_URL}/quartosDisponiveis"`, {
+    const res = await fetch(`${API_URL}/quartosDisponiveis`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ inicio, fim, quantidade }),
     });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => null);
+      throw new Error(err?.message || "Erro ao fazer a Consulta");
+    }
+
+    const json = await res.json();
+    console.log(json);
   }
 
   // 🔹 LOGOUT
@@ -103,6 +112,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       signIn,
       signUp,
       signOut,
+      consulta,
     }),
     [token, isLoading],
   );

@@ -1,6 +1,8 @@
 import AuthContainer from "@/components/ui/AuthContainer";
 import RenderDatePicker from "@/components/ui/DatePicker";
+import { useAuth } from "@/contexts/AuthContext";
 import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
   Dimensions,
@@ -23,7 +25,9 @@ const RenderExplore = () => {
   const [checkOut, setCheckOut] = useState("");
   const [calendar, setCalendar] = useState<"checkin" | "checkout" | null>(null);
   const [qntGuests, setQntGuests] = useState<number>(1);
-
+  const router = useRouter();
+  const { consulta } = useAuth();
+  const [conQuarto, setConQuarto] = useState(false);
   const [roomModalVisible, setRoomModalVisible] = useState(false);
 
   const closeCalendar = () => setCalendar(null);
@@ -107,17 +111,17 @@ const RenderExplore = () => {
           >
             <Text style={global.label}>Quantidade de hóspedes</Text>
 
-          <InputSpin
-            guests={qntGuests}
-            onSelectSpin={(guests) => {
-              setQntGuests(guests);
-            }}
-            maxGuests={6}
-            minGuests={1}
-            step={1}
-            colorMax="#DC143C"
-            colorMin="#DC143C"
-          />
+            <InputSpin
+              guests={qntGuests}
+              onSelectSpin={(guests) => {
+                setQntGuests(guests);
+              }}
+              maxGuests={6}
+              minGuests={1}
+              step={1}
+              colorMax="#DC143C"
+              colorMin="#DC143C"
+            />
 
             {/* BOTÃO CONSULTA */}
             <TouchableOpacity
@@ -133,8 +137,8 @@ const RenderExplore = () => {
                 alignSelf: "center",
                 elevation: 3,
               }}
-              onPress={() => {
-                console.log("Consulta realizada");
+              onPress={async () => {
+                consulta(checkIn, checkOut, qntGuests);
               }}
             >
               <Text
