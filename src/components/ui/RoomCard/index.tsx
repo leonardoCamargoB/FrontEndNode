@@ -1,5 +1,13 @@
 import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
-import { Dimensions, Image, ImageSourcePropType, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import { global } from "../styles";
 
 type NameIcon =
@@ -15,111 +23,125 @@ type Props = {
   description?: Infos;
   icon?: NameIcon;
   onPress?: () => void;
+  onPressReserve?: () => void
 };
-
 
 const { width, height } = Dimensions.get("window");
 
-const RoomCard = ({ image, label, description, icon, onPress }: Props) => {
+const RoomCard = ({ image, label, description, icon, onPress, onPressReserve }: Props) => {
   return (
     <View style={global.content}>
-
+      {/* IMAGEM */}
       {!!image && (
-        <View>
-          <Image style={styles.image} source={image} resizeMode="cover" />
-        </View>
+        <Image style={styles.image} source={image} resizeMode="cover" />
       )}
 
-      <View>
-        {!!label && (
-          <Text style={{ fontSize: 23, fontWeight: 600, marginTop: height * 0.02 }}>
-            {label}
-          </Text>
-        )}
+      {/* TITULO */}
+      {!!label && (
+        <Text style={styles.title}>
+          {label}
+        </Text>
+      )}
 
-        <View style={styles.container}>
-          <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-evenly" }}>
-            
-            {!!icon && (
-              <View style={{ marginTop: height * 0.04 }}>
-                {icon.lib === "MaterialIcons" && (
-                  <MaterialIcons name={icon.name} size={22} color="black" />
+      <View style={styles.container}>
+        <View style={styles.row}>
+          
+          {/* ÍCONE */}
+          {!!icon && (
+            <View style={styles.icon}>
+              {icon.lib === "MaterialIcons" && (
+                <MaterialIcons name={icon.name} size={22} color="black" />
+              )}
+              {icon.lib === "FontAwesome5" && (
+                <FontAwesome5 name={icon.name} size={22} color="black" />
+              )}
+              {icon.lib === "FontAwesome6" && (
+                <FontAwesome6 name={icon.name} size={22} color="black" />
+              )}
+            </View>
+          )}
+
+          {/* DESCRIÇÃO */}
+          {!!description && (
+            <View style={styles.description}>
+              <View>
+                {!!description.title && (
+                  <Text style={global.label}>{description.title}</Text>
                 )}
-                {icon.lib === "FontAwesome5" && (
-                  <FontAwesome5 name={icon.name} size={22} color="black" />
-                )}
-                {icon.lib === "FontAwesome6" && (
-                  <FontAwesome6 name={icon.name} size={22} color="black" />
-                )}
+
+                <Text style={styles.text}>{description.text}</Text>
               </View>
-            )}
 
-            {!!description && (
-              <View style={styles.description}>
-                <View>
-                  {!!description.title && (
-                    <Text style={global.label}>{description.title}</Text>
-                  )}
-                  <Text style={styles.text}>{description.text}</Text>
-                </View>
-
-                <View style={{ marginTop: height * 0.04 }}>
-                  <Text style={styles.price}>R$ {description.price}</Text>
-                </View>
-              </View>
-            )}
-
-          </View>
+              <Text style={styles.price}>
+                R$ {description.price.toFixed(2)}
+              </Text>
+            </View>
+          )}
         </View>
-
-        {/* 🔽 BOTÃO PARA ABRIR MODAL */}
-        {!!onPress && (
-          <TouchableOpacity style={styles.detailsButton} onPress={onPress}>
-            <Text style={styles.detailsButtonText}>Ver detalhes</Text>
-          </TouchableOpacity>
-        )}
-
       </View>
+
+      <TouchableOpacity style={styles.detailsButton} onPress={onPressReserve}>
+          <Text style={styles.detailsButtonText}>
+            Fazer Pedido
+          </Text>
+      </TouchableOpacity>
+
+      {/* BOTÃO DETALHES */}
+      {!!onPress && (
+        <TouchableOpacity style={styles.detailsButton} onPress={onPress}>
+          <Text style={styles.detailsButtonText}>
+            Ver detalhes
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   image: {
-    height: height * 0.3,
-    width: "auto",
+    height: height * 0.28,
+    width: "100%",
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 2,
+  },
+
+  title: {
+    fontSize: 23,
+    fontWeight: "600",
+    marginTop: height * 0.02,
   },
 
   container: {
     marginTop: height * 0.03,
-    backgroundColor: "#444444",
+    backgroundColor: "#3b3b3b",
     borderRadius: 10,
+    padding: 12,
+  },
+
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  icon: {
+    marginRight: 12,
   },
 
   description: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    height: height * 0.09,
-    width: "auto",
+    flex: 1,
     justifyContent: "space-between",
   },
 
   text: {
     fontSize: 15,
+    marginTop: 2,
   },
 
   price: {
-    width: width * 0.7,
+    marginTop: 10,
     fontSize: 17,
     fontWeight: "700",
-    marginLeft: 10,
-    color: "black",
+    color: "#000",
   },
 
   detailsButton: {
@@ -139,6 +161,5 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
 });
-
 
 export default RoomCard;

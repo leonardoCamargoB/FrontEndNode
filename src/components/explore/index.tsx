@@ -5,20 +5,21 @@ import { FontAwesome5, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
+  ActivityIndicator,
+  Alert,
   Dimensions,
   Modal,
   Pressable,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
-  Alert,
 } from "react-native";
 import RoomCard from "../ui/RoomCard";
 import TextField from "../ui/TextField";
 import InputSpin from "../ui/inputSpin";
 import QuartoModal from "../ui/modals/QuartoModal";
 import { global } from "../ui/styles";
-
 
 const RenderExplore = () => {
   const { width, height } = Dimensions.get("window");
@@ -31,6 +32,10 @@ const RenderExplore = () => {
   const { consulta } = useAuth();
   const [conQuarto, setConQuarto] = useState(false);
   const [roomModalVisible, setRoomModalVisible] = useState(false);
+  const [loaging, setLoanding] = useState(false);
+  const [avaibleRooms, setAvailableRooms] = useState<any[]>([]);
+  const [searchroom, addReservationToCart] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState<any>(null);
 
   const closeCalendar = () => setCalendar(null);
 
@@ -39,6 +44,43 @@ const RenderExplore = () => {
     | { lib: "FontAwesome6"; name: keyof typeof FontAwesome6.glyphMap }
     | { lib: "FontAwesome5"; name: keyof typeof FontAwesome5.glyphMap };
 
+  const handleSearch = async () => {
+    if (!checkIn || !checkOut) {
+      Alert.alert(
+        "ATENÇÃO!",
+        "Selecione as datas de entrada e saída para continuar",
+      );
+      return;
+    }
+    setLoanding(true);
+    setAvailableRooms([]);
+
+    try {
+      const rooms = await consulta(checkIn, checkOut, qntGuests);
+      setAvailableRooms(rooms || []);
+      console.log(rooms);
+    } catch (error: any) {
+      if (!error?.message?.includes("encontrado")) {
+        Alert.alert("ERRO", "Ocorreu um problema ao buscar quartos.");
+      }
+      setAvailableRooms([]);
+    } finally {
+      setLoanding(false);
+    }
+  };
+
+    const handleAddToCart = (room: any) => {
+    addReservationToCart({
+      roomId: room.id,
+      nome: room.nome,
+      qtd_cama_casal: room.qtd_cama_casal,
+      qtd_cama_solteiro: room.qtd_cama_solteiro,
+      preco: Number(room.preco),
+      inicio: checkIn,
+      fim: checkOut,
+      quantidade: qntGuests
+    });
+    
   return (
     <AuthContainer>
       <View style={{ display: "flex", justifyContent: "center" }}>
@@ -139,76 +181,106 @@ const RenderExplore = () => {
                 alignSelf: "center",
                 elevation: 3,
               }}
-              onPress={async () => {
-                try{
-                  await consulta(checkIn, checkOut, qntGuests);
-                } 
-                catch(erro: any){
-                  Alert.alert("Nessas datas", erro?.message || "Sem quartos disponiveis");
-                }
-              }}
+              disabled={loaging}
+              onPress={handleSearch}
             >
-              <Text
-                style={{
-                  color: "#FFF",
-                  fontSize: 16,
-                  fontWeight: "600",
-                }}
-              >
-                Consulta
-              </Text>
+              {loaging ? (
+                <ActivityIndicator size="small" color="#FFF" />
+              ) : (
+                <Text
+                  style={{ color: "#FFF", fontSize: 16, fontWeight: "600" }}
+                >
+                  Consulta
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* CARD QUARTO */}
-        <RoomCard
-          image={require("../../assets/imgs/img.jpg")}
-          label="Apartamento"
-          icon={{
-            lib: "FontAwesome5",
-            name: "bed",
-          }}
-          description={{
-            title: "Descrição do Quarto",
-            text: "1 cama de casal \n1 cama de solteiro",
-            price: 180.9,
-          }}
-          onPress={() => setRoomModalVisible(true)}
-        />
+        {/* Renderização dos quartos */}
+        {avaibleRooms.length > 0 ? (
+          <View>
+            <Text
+              style={[
+                global.label,
+                { marginTop: height * 0.04, textAlign: "center" },
+              ]}
+            >
+              Opções encontradas
+            </Text>
 
-        {/* MODAL QUARTO */}
-        <QuartoModal
-          visible={roomModalVisible}
-          onClose={() => setRoomModalVisible(false)}
-          room={{
-            title: "Apartamento",
-            description:
-              "Apartamento moderno e aconchegante, ideal para casais, famílias pequenas ou viagens a trabalho. O espaço é bem iluminado, ventilado e decorado com estilo contemporâneo, proporcionando conforto e praticidade durante toda a estadia. Local tranquilo, perfeito para descanso, com fácil acesso às principais áreas da cidade..",
-            estadia:
-              "Estadia mínima de 2 noites. Check-in a partir das 14h. Check-out até às 12h.",
-            checkIn: "15/07/2026 - 14:00",
-            checkOut: "17/07/2026 - 12:00",
-            details: [
-              "Wi-Fi gratuito de alta velocidade",
-              "Ar-condicionado",
-              "Smart TV",
-              "Cozinha compacta equipada \n (micro-ondas, fogão e utensílios básicos)",
-              "Banheiro privativo com chuveiro quente",
-              "Roupa de cama e toalhas inclusas",
-              "Espaço limpo e higienizado \n antes de cada estadia",
-            ],
-            beds: [
-              "1 cama de casal confortável",
-              "1 cama de solteiro adicional",
-            ],
-            price: 180.9,
-            image: require("../../assets/imgs/img.jpg"),
-          }}
-        />
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              snapToInterval={width * 0.85}
+            >
+              {avaibleRooms.map((room) => (
+                <RoomCard
+                  key={room.id}
+                  image={
+                    room.fotos?.length > 0
+                      ? { uri: room.fotos[0].url }
+                      : require("../../assets/imgs/img.jpg")
+                  }
+                  label={room.nome}
+                  // icon={{
+                  //   lib: "FontAwesome5",
+                  //   name: "bed",
+                  // }}
+                  description={{
+                    title: "Descrição do Quarto",
+                    text: `${room.qtd_cama_casal} cama(s) casal \n ${room.qtd_cama_solteiro} cama(s) solteiro
+                `,
+                    price: Number(room.preco),
+                  }}
+                  onPressReserve={() => handleAddToCart(room)}
+                  onPress={() => {
+                  setSelectedRoom(room);
+                  setRoomModalVisible(true);
+                }}
+                />
+              ))}
+            </ScrollView>
+          </View>
+        ) : (
+          <View>
+            {" "}
+            <Text
+              style={[
+                global.label,
+                { marginTop: height * 0.04, textAlign: "center" },
+              ]}
+            >
+              {" "}
+              Nenhuma opção encontrada
+            </Text>
+          </View>
+        )}
+                {avaibleRooms.map((room) => (
+            <RoomCard
+              key={room.id}
+              image={
+                room.fotos?.length > 0
+                  ? { uri: room.fotos[0].url }
+                  : require("../../assets/imgs/img.jpg")
+              }
+              label={room.nome}
+              description={{
+                title: "Descrição do Quarto",
+                text: `${room.qtd_cama_casal} cama(s) casal \n ${room.qtd_cama_solteiro} cama(s) solteiro`,
+                price: Number(room.preco),
+              }}
+              onPressReserve={() => handleAddToCart(room)}
+              onPress={() => {
+                setSelectedRoom(room);
+                setRoomModalVisible(true);
+              }}
+            />
+          ))}
       </View>
     </AuthContainer>
   );
 };
-
+}
 export default RenderExplore;
+

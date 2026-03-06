@@ -87,15 +87,6 @@
                     ))}
                 </View>
                 )}
-
-                {/* Botão */}
-                <TouchableOpacity
-                onPress={() => router.push("/(tabs)/reservations")}
-                style={styles.primaryButton}
-                >
-                <Text style={styles.primaryButtonText}>Reservar agora</Text>
-                </TouchableOpacity>
-
                 {/* Fechar */}
                 <TouchableOpacity onPress={onClose}>
                 <Text style={styles.cancelText}>Fechar</Text>
