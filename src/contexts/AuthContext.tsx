@@ -32,7 +32,9 @@ type AuthContextType = {
   consulta: (inicio: string, fim: string, quantidade: number) => Promise<any[]>;
   cartReservations: CartReservations[];
   addReservationToCart: (reservation: CartReservations) => void;
+  removeReservationFromCart: (index = number) => void;
   clearCart: () => void;
+  
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -46,12 +48,19 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     (async () => {
       try {
         const stored = await AsyncStorage.getItem("token");
+        const storedCart = await AsyncStorage.getItem("cartReservaions");
         if (stored) setToken(stored);
+        if(storedCart) setCartReservations(JSON.parse(storedCart));
       } finally {
         setIsLoading(false);
       }
     })();
   }, []);
+
+  useEffect(() =>{
+    AsyncStorage.setItem("cartReservation", JSON.stringify(cartResrvations));
+
+  }, [cartResrvations]);
 
   // 🔹 LOGIN
   async function signIn(email: string, senha: string) {
@@ -121,9 +130,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setToken(null);
   }
 
-  const addReservationToCart = (reservation: CartReservations) => {}
-
-  const clearCart = () => {};
+  const addReservationToCart = (reservation: CartReservations) => {
+    setCartReservations((propsRoomReserved)=> [...propsRoomReserved, reservation]); 
+  }
+  const removeReservationFromCart = (index: number) =>{
+    setCartReservations((propsRoomReserved) => propsRoomReserved.filter((_, i) => i !== index));
+  }
+  const clearCart = () => {setCartReservations([]);}
+  
 
   const value = useMemo(
     () => ({
@@ -135,10 +149,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       consulta,
       cartResrvations,
       addReservationToCart,
-      clearCart,
-      
+      clearCart
     }),
-    [token, isLoading],
+    [token, isLoading, cartResrvations],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

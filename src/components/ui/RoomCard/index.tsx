@@ -82,7 +82,7 @@ const RoomCard = ({ image, label, description, icon, onPress, onPressReserve }: 
 
       <TouchableOpacity style={styles.detailsButton} onPress={onPressReserve}>
           <Text style={styles.detailsButtonText}>
-            Fazer Pedido
+            Incluir Reserva
           </Text>
       </TouchableOpacity>
 

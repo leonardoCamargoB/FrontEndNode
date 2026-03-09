@@ -76,10 +76,12 @@ const RenderExplore = () => {
       qtd_cama_casal: room.qtd_cama_casal,
       qtd_cama_solteiro: room.qtd_cama_solteiro,
       preco: Number(room.preco),
-      inicio: checkIn,
-      fim: checkOut,
-      quantidade: qntGuests
+      dataInicio: checkIn,
+      dataFim: checkOut,
+      quantidade: qntGuests,
     });
+    Alert.alert("SUCESSO!", "Quarto adicionada ao carrinho!");
+  };
     
   return (
     <AuthContainer>
@@ -234,10 +236,10 @@ const RenderExplore = () => {
                     price: Number(room.preco),
                   }}
                   onPressReserve={() => handleAddToCart(room)}
-                  onPress={() => {
-                  setSelectedRoom(room);
-                  setRoomModalVisible(true);
-                }}
+                onPress={() => {
+                setSelectedRoom(room);
+                setRoomModalVisible(true);
+              }}  
                 />
               ))}
             </ScrollView>
@@ -256,31 +258,42 @@ const RenderExplore = () => {
             </Text>
           </View>
         )}
-                {avaibleRooms.map((room) => (
-            <RoomCard
-              key={room.id}
-              image={
-                room.fotos?.length > 0
-                  ? { uri: room.fotos[0].url }
-                  : require("../../assets/imgs/img.jpg")
-              }
-              label={room.nome}
-              description={{
-                title: "Descrição do Quarto",
-                text: `${room.qtd_cama_casal} cama(s) casal \n ${room.qtd_cama_solteiro} cama(s) solteiro`,
-                price: Number(room.preco),
-              }}
-              onPressReserve={() => handleAddToCart(room)}
-              onPress={() => {
-                setSelectedRoom(room);
-                setRoomModalVisible(true);
-              }}
-            />
-          ))}
+                  {selectedRoom && (
+      <QuartoModal
+        visible={roomModalVisible}
+        onClose={() => setRoomModalVisible(false)}
+        room={{
+          title: selectedRoom.nome,
+
+          description:
+            "Quarto moderno e aconchegante, ideal para casais, famílias pequenas ou viagens a trabalho.",
+
+          details: [
+            "Wi-Fi gratuito de alta velocidade",
+            "Ar-condicionado",
+            "Smart TV",
+            "Banheiro privativo com chuveiro quente",
+          ],
+
+          beds: [
+            "Contém no mínimo no quarto:",
+            `${selectedRoom.qtd_cama_casal} cama(s) de casal`,
+            `${selectedRoom.qtd_cama_solteiro} cama(s) de solteiro`,
+          ],
+
+          price: Number(selectedRoom.preco),
+
+          image:
+            selectedRoom.fotos?.length > 0
+              ? { uri: selectedRoom.fotos[0].url }
+              : require("../../assets/imgs/img.jpg"),
+        }}
+      />
+    )}
       </View>
     </AuthContainer>
   );
 };
-}
+
 export default RenderExplore;
 
