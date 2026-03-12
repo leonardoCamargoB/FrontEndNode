@@ -34,7 +34,10 @@ const RenderExplore = () => {
   const [roomModalVisible, setRoomModalVisible] = useState(false);
   const [loaging, setLoanding] = useState(false);
   const [avaibleRooms, setAvailableRooms] = useState<any[]>([]);
-  const [searchroom, addReservationToCart] = useState(false);
+
+  // ✅ CORREÇÃO AQUI
+  const [searchroom, addReservationToCart] = useState<any[]>([]);
+
   const [selectedRoom, setSelectedRoom] = useState<any>(null);
 
   const closeCalendar = () => setCalendar(null);
@@ -52,6 +55,7 @@ const RenderExplore = () => {
       );
       return;
     }
+
     setLoanding(true);
     setAvailableRooms([]);
 
@@ -69,25 +73,28 @@ const RenderExplore = () => {
     }
   };
 
-    const handleAddToCart = (room: any) => {
-    addReservationToCart({
-      roomId: room.id,
-      nome: room.nome,
-      qtd_cama_casal: room.qtd_cama_casal,
-      qtd_cama_solteiro: room.qtd_cama_solteiro,
-      preco: Number(room.preco),
-      dataInicio: checkIn,
-      dataFim: checkOut,
-      quantidade: qntGuests,
-    });
+  const handleAddToCart = (room: any) => {
+    addReservationToCart((prev: any[]) => [
+      ...prev,
+      {
+        roomId: room.id,
+        nome: room.nome,
+        qtd_cama_casal: room.qtd_cama_casal,
+        qtd_cama_solteiro: room.qtd_cama_solteiro,
+        preco: Number(room.preco),
+        dataInicio: checkIn,
+        dataFim: checkOut,
+        quantidade: qntGuests,
+      },
+    ]);
+
     Alert.alert("SUCESSO!", "Quarto adicionada ao carrinho!");
   };
-    
+
   return (
     <AuthContainer>
       <View style={{ display: "flex", justifyContent: "center" }}>
         <View style={{ display: "flex", flexDirection: "column" }}>
-          {/* CHECK-IN */}
           <TouchableOpacity onPress={() => setCalendar("checkin")}>
             <View style={{ width: width * 0.9 }}>
               <TextField
@@ -99,7 +106,6 @@ const RenderExplore = () => {
             </View>
           </TouchableOpacity>
 
-          {/* CHECK-OUT */}
           <TouchableOpacity onPress={() => setCalendar("checkout")}>
             <View style={{ width: width * 0.9 }}>
               <TextField
@@ -111,7 +117,6 @@ const RenderExplore = () => {
             </View>
           </TouchableOpacity>
 
-          {/* MODAL CALENDÁRIO */}
           <Modal
             transparent
             animationType="fade"
@@ -149,10 +154,9 @@ const RenderExplore = () => {
             </Pressable>
           </Modal>
 
-          {/* HÓSPEDES */}
           <View
             style={{
-              marginBottom: height * 0.035, // ✅ espaço antes do RoomCard
+              marginBottom: height * 0.035,
             }}
           >
             <Text style={global.label}>Quantidade de hóspedes</Text>
@@ -169,7 +173,6 @@ const RenderExplore = () => {
               colorMin="#DC143C"
             />
 
-            {/* BOTÃO CONSULTA */}
             <TouchableOpacity
               activeOpacity={0.8}
               style={{
@@ -199,7 +202,6 @@ const RenderExplore = () => {
           </View>
         </View>
 
-        {/* Renderização dos quartos */}
         {avaibleRooms.length > 0 ? (
           <View>
             <Text
@@ -225,75 +227,63 @@ const RenderExplore = () => {
                       : require("../../assets/imgs/img.jpg")
                   }
                   label={room.nome}
-                  // icon={{
-                  //   lib: "FontAwesome5",
-                  //   name: "bed",
-                  // }}
                   description={{
                     title: "Descrição do Quarto",
-                    text: `${room.qtd_cama_casal} cama(s) casal \n ${room.qtd_cama_solteiro} cama(s) solteiro
-                `,
+                    text: `${room.qtd_cama_casal} cama(s) casal \n ${room.qtd_cama_solteiro} cama(s) solteiro`,
                     price: Number(room.preco),
                   }}
                   onPressReserve={() => handleAddToCart(room)}
-                onPress={() => {
-                setSelectedRoom(room);
-                setRoomModalVisible(true);
-              }}  
+                  onPress={() => {
+                    setSelectedRoom(room);
+                    setRoomModalVisible(true);
+                  }}
                 />
               ))}
             </ScrollView>
           </View>
         ) : (
           <View>
-            {" "}
             <Text
               style={[
                 global.label,
                 { marginTop: height * 0.04, textAlign: "center" },
               ]}
             >
-              {" "}
               Nenhuma opção encontrada
             </Text>
           </View>
         )}
-                  {selectedRoom && (
-      <QuartoModal
-        visible={roomModalVisible}
-        onClose={() => setRoomModalVisible(false)}
-        room={{
-          title: selectedRoom.nome,
 
-          description:
-            "Quarto moderno e aconchegante, ideal para casais, famílias pequenas ou viagens a trabalho.",
-
-          details: [
-            "Wi-Fi gratuito de alta velocidade",
-            "Ar-condicionado",
-            "Smart TV",
-            "Banheiro privativo com chuveiro quente",
-          ],
-
-          beds: [
-            "Contém no mínimo no quarto:",
-            `${selectedRoom.qtd_cama_casal} cama(s) de casal`,
-            `${selectedRoom.qtd_cama_solteiro} cama(s) de solteiro`,
-          ],
-
-          price: Number(selectedRoom.preco),
-
-          image:
-            selectedRoom.fotos?.length > 0
-              ? { uri: selectedRoom.fotos[0].url }
-              : require("../../assets/imgs/img.jpg"),
-        }}
-      />
-    )}
+        {selectedRoom && (
+          <QuartoModal
+            visible={roomModalVisible}
+            onClose={() => setRoomModalVisible(false)}
+            room={{
+              title: selectedRoom.nome,
+              description:
+                "Quarto moderno e aconchegante, ideal para casais, famílias pequenas ou viagens a trabalho.",
+              details: [
+                "Wi-Fi gratuito de alta velocidade",
+                "Ar-condicionado",
+                "Smart TV",
+                "Banheiro privativo com chuveiro quente",
+              ],
+              beds: [
+                "Contém no mínimo no quarto:",
+                `${selectedRoom.qtd_cama_casal} cama(s) de casal`,
+                `${selectedRoom.qtd_cama_solteiro} cama(s) de solteiro`,
+              ],
+              price: Number(selectedRoom.preco),
+              image:
+                selectedRoom.fotos?.length > 0
+                  ? { uri: selectedRoom.fotos[0].url }
+                  : require("../../assets/imgs/img.jpg"),
+            }}
+          />
+        )}
       </View>
     </AuthContainer>
   );
 };
 
 export default RenderExplore;
-

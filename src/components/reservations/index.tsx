@@ -1,175 +1,285 @@
-    import { FontAwesome6 } from "@expo/vector-icons";
-    import { useState } from "react";
-    import {Dimensions,Text,TouchableOpacity,View} from "react-native";
+    import { useAuth } from "@/contexts/AuthContext";
+    import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+    import React from "react";
+    import {
+    Alert,
+    Dimensions,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    } from "react-native";
     import AuthContainer from "../ui/AuthContainer";
-    import QuartoModal from "../ui/modals/QuartoModal";
-    import { useRouter } from "expo-router";
-    const { width } = Dimensions.get("window");
-    import { FontAwesome5 } from "@expo/vector-icons";
+    import { global } from "../ui/styles";
 
     const RenderReservations = () => {
-    const { width } = Dimensions.get("window");
+    const { width, height } = Dimensions.get("window");
 
-    const [roomModalVisible, setRoomModalVisible] = useState(false);
+    const { cartReservations, removeReservationFromCart, createOrder } =
+        useAuth();
 
-    const reservation = {
-        checkIn: "10/02/2026",
-        checkOut: "15/02/2026",
-        price: "R$ 1.250,00",
+    const calculoTotal = cartReservations.reduce(
+        (acc, item) => acc + Number(item.preco),
+        0
+    );
+
+    const handleFinishOrder = async () => {
+        try {
+        await createOrder("Pix");
+        Alert.alert("Sucesso", "Pedido finalizado!");
+        } catch (error: any) {
+        Alert.alert(
+            "Erro",
+            error.message || "Não foi possível finalizar o pedido."
+        );
+        }
     };
-    const router = useRouter();
+
     return (
         <AuthContainer
         title="Minhas Reservas"
-        subtitle="Confira e finalize sua reserva"
-        icon={{ lib: "FontAwesome6", name: "calendar" }}
+        subtitle="Revise os itens do seu carrinho"
         >
-        {/* CARD DA RESERVA */}
-        <View
-            style={{
-            backgroundColor: "#1F1F1F",
-            borderRadius: 16,
-            padding: 18,
-            width: width * 0.94,
-            gap: 16,
-            borderWidth: 1,
-            borderColor: "#2E2E2E",
-            }}
-        >           
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <FontAwesome5 name="bed" size={18} color="#DC143C" />
-            <Text style={{ color: "#555555", fontSize: 17, fontWeight: "700" }}>Reserva Ativa</Text>
-            </View>
-
-            {/* DATAS */}
-            <View style={{ gap: 10 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                <FontAwesome6 name="right-to-bracket" size={16} color="#4CAF50" />
-                <Text style={{ color: "#555555" }}>
-                Check-in:{" "}
-                <Text style={{ color: "#555555" }}>{reservation.checkIn}</Text>
-                </Text>
-            </View>
-
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                <FontAwesome6 name="right-from-bracket" size={16} color="#F44336" />
-                <Text style={{ color: "#555555" }}>
-                Check-out:{" "}
-                <Text style={{ color: "#555555" }}>{reservation.checkOut}</Text>
-                </Text>
-            </View>
-            </View>
-
-            {/* DIVISOR */}
-            <View style={{height: 1,backgroundColor: "#333",opacity: 0.8,}}/>
-
-            {/* PREÇO */}
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-            <FontAwesome6 name="money-bill-wave" size={18} color="#07ff77" />
-            <Text style={{ color: "#CCC", fontSize: 15 }}>
-                Valor total
-            </Text>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 40 }}
+        >
+            <View style={global.content}>
             <Text
-                style={{
-                color: "#FFF",
-                fontSize: 16,
-                fontWeight: "700",
-                marginLeft: "auto",
-                }}
+                style={[
+                global.label,
+                { textAlign: "center", paddingVertical: height * 0.013 },
+                ]}
             >
-                {reservation.price}
+                Reservas adicionadas
             </Text>
-            </View>
 
-            {/* BOTÃO DETALHES */}
-            <TouchableOpacity
-            style={{
-                marginTop: 8,
-                backgroundColor: "#DC143C",
-                paddingVertical: 12,
-                borderRadius: 10,
-                alignItems: "center",
-            }}
-            onPress={() => setRoomModalVisible(true)}
-            >
-            <Text style={{ color: "#FFF", fontWeight: "600" }}>
-                Ver detalhes do Reserva
-            </Text>
-            </TouchableOpacity>
-
-            {/* BOTÕES PRINCIPAIS */}
-            <View style={{ gap: 10, marginTop: 6 }}>
-            {/* CONFIRMAR */}
-            <TouchableOpacity
+            {cartReservations.length === 0 ? (
+                <View
                 style={{
-                backgroundColor: "#DC143C",
-                paddingVertical: 14,
-                borderRadius: 12,
-                alignItems: "center",
-                }}
-                onPress={() => {}}
-            >
-                <Text
-                style={{
-                    color: "#FFF",
-                    fontSize: 15,
-                    fontWeight: "700",
+                    padding: width * 0.04,
+                    alignItems: "center",
                 }}
                 >
-                Confirmar reserva
+                <Text style={{ color: "#777", fontSize: 18 }}>
+                    Nenhuma reserva adicionada
                 </Text>
-            </TouchableOpacity>
+                </View>
+            ) : (
+                <View>
+                {cartReservations.map((item, index) => (
+                    <View key={index} style={styles.itemCard}>
+                    {/* HEADER */}
+                    <View
+                        style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        }}
+                    >
+                        <View style={styles.cardHeader}>
+                        <FontAwesome5 name="bed" size={18} color="#DC143C" />
+                        <Text style={styles.roomLabel}>{item.nome}</Text>
+                        </View>
 
-            {/* VOLTAR */}
-            <TouchableOpacity
-                style={{
-                borderWidth: 1,
-                borderColor: "#DC143C",
-                paddingVertical: 12,
-                borderRadius: 12,
-                alignItems: "center",
-                }}
-                onPress={() => router.push("/(tabs)/explorer")}
-            >
-                <Text
-                style={{
-                    color: "#DC143C",
-                    fontSize: 14,
-                    fontWeight: "600",
-                }}
-                >
-                Editar reserva
-                </Text>
-            </TouchableOpacity>
+                        <TouchableOpacity
+                        onPress={() => removeReservationFromCart(index)}
+                        >
+                        <MaterialCommunityIcons
+                            name="trash-can"
+                            color="#DC143C"
+                            size={20}
+                        />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.divider} />
+
+                    {/* INFO */}
+                    <View style={styles.infoGrid}>
+                        <View style={styles.infoBox}>
+                        <Text style={styles.miniLabel}>ENTRADA</Text>
+                        <Text style={styles.infoText}>{item.inicio}</Text>
+                        </View>
+
+                        <View style={styles.infoBox}>
+                        <Text style={styles.miniLabel}>SAÍDA</Text>
+                        <Text style={styles.infoText}>{item.fim}</Text>
+                        </View>
+
+                        <View style={styles.infoBox}>
+                        <Text style={styles.miniLabel}>HÓSPEDES</Text>
+                        <Text style={styles.infoText}>
+                            {item.quantidade} Pessoas
+                        </Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.totalDivider} />
+
+                    {/* PREÇO */}
+                    <View>
+                        <Text style={styles.sectionTitle}>Resumo do valor</Text>
+
+                        <View style={styles.priceRow}>
+                        <View>
+                            <Text style={styles.priceLabel}>
+                            Preço da diária: R$ {item.preco}
+                            </Text>
+                            <Text style={styles.priceLabel}>
+                            Quantidade de diárias: X
+                            </Text>
+                        </View>
+
+                        <View>
+                            <Text style={styles.priceValue}>Subtotal</Text>
+                            <Text style={styles.priceValue}>R$ X,xx</Text>
+                        </View>
+                        </View>
+                    </View>
+                    </View>
+                ))}
+
+                {/* TOTAL */}
+                <View style={styles.itemCard}>
+                    <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    }}
+                    >
+                    <Text style={styles.totalLabel}>Total</Text>
+                    <Text style={styles.totalPrice}>
+                        R$ {calculoTotal.toFixed(2)}
+                    </Text>
+                    </View>
+                </View>
+
+                {/* BOTÃO */}
+                <View style={styles.buttonArea}>
+                    <TouchableOpacity
+                    style={styles.confirmButton}
+                    onPress={handleFinishOrder}
+                    >
+                    <Text style={styles.confirmButtonText}>
+                        CONFIRMAR RESERVA
+                    </Text>
+                    </TouchableOpacity>
+                </View>
+                </View>
+            )}
             </View>
-        </View>
-
-        {/* MODAL */}
-        <QuartoModal
-            visible={roomModalVisible}
-            onClose={() => setRoomModalVisible(false)}
-            room={{
-            title: "Apartamento",
-            description:
-                "quarto confortável, ideal para casais ou famílias pequenas.",
-            estadia:
-                "Estadia mínima de 2 noites\nCheck-in a partir das 14h\nCheck-out até as 12h",
-            checkIn: "10/07/2026 - 14:00",
-            checkOut: "17/07/2026 - 12:00",
-            details: [
-                "Wi-Fi gratuito",
-                "Ar-condicionado",
-                "Banheiro privativo",
-                "sacada com vista para o mar",
-                "TV de tela plana",
-            ],
-            beds: ["1 cama de casal", "3 cama de solteiro"],
-            price: 259.99,
-            image: require("../../assets/imgs/img.jpg"),
-            }}
-        />
+        </ScrollView>
         </AuthContainer>
     );
     };
+
+    const styles = StyleSheet.create({
+    itemCard: {
+        backgroundColor: "#1F1F1F",
+        borderRadius: 16,
+        padding: 18,
+        borderWidth: 1,
+        borderColor: "#2E2E2E",
+        marginBottom: 18,
+    },
+
+    cardHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
+    },
+
+    roomLabel: {
+        fontSize: 17,
+        fontWeight: "700",
+        color: "#FFF",
+    },
+
+    divider: {
+        height: 1,
+        backgroundColor: "#333",
+        marginVertical: 12,
+        opacity: 0.8,
+    },
+
+    infoGrid: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+
+    infoBox: {
+        gap: 2,
+    },
+
+    miniLabel: {
+        fontSize: 10,
+        color: "#888",
+        fontWeight: "bold",
+    },
+
+    infoText: {
+        fontSize: 14,
+        fontWeight: "500",
+        color: "#CCC",
+    },
+
+    sectionTitle: {
+        fontSize: 15,
+        fontWeight: "700",
+        marginBottom: 12,
+        color: "#FFF",
+    },
+
+    priceRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+
+    priceLabel: {
+        color: "#AAA",
+    },
+
+    priceValue: {
+        fontWeight: "600",
+        color: "#FFF",
+    },
+
+    totalDivider: {
+        height: 1,
+        backgroundColor: "#333",
+        marginVertical: 12,
+    },
+
+    totalLabel: {
+        fontSize: 18,
+        fontWeight: "700",
+        color: "#FFF",
+    },
+
+    totalPrice: {
+        fontSize: 18,
+        fontWeight: "700",
+        color: "#07ff77",
+    },
+
+    buttonArea: {
+        marginTop: 20,
+    },
+
+    confirmButton: {
+        backgroundColor: "#DC143C",
+        paddingVertical: 14,
+        borderRadius: 12,
+        alignItems: "center",
+    },
+
+    confirmButtonText: {
+        color: "#FFF",
+        fontWeight: "700",
+        fontSize: 15,
+    },
+    });
 
     export default RenderReservations;
